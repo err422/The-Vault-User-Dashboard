@@ -1,5 +1,5 @@
 // Dashboard JavaScript
-// This file handles fetching data from our API and updating the UI
+// This file handles fetching data from API and updating the UI
 
 // Store our charts globally so we can update them
 let distributionChart = null;
