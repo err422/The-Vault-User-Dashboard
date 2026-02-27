@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/err422/The-Vault-User-Dashboard#readme",
   "dependencies": {
+    "dotenv": "^17.3.1",
     "express": "^5.2.1",
     "firebase-admin": "^13.7.0"
   }
