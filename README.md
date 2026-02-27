@@ -2,7 +2,6 @@
 
 Admin dashboard for The Vault - displays statistics, charts, and analytics from Firebase.
 m install
-```
 
 ## Project Structure
 
