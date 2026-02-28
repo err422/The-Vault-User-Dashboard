@@ -47,14 +47,14 @@ app.get('/', async (req, res) => {
     
     res.send(`
       <h1>Dashboard Server is Running!</h1>
-      <p>Firebase connection successful ✅</p>
+      <p>Firebase connection successful</p>
       <p>Latest version from database: ${version}</p>
       <p><a href="/api/stats">View Stats API</a></p>
     `);
   } catch (error) {
     res.send(`
       <h1>Dashboard Server is Running!</h1>
-      <p>Firebase connection failed ❌</p>
+      <p>Firebase connection failed</p>
       <p>Error: ${error.message}</p>
     `);
   }
@@ -63,7 +63,7 @@ app.get('/', async (req, res) => {
 // API endpoint to get overall statistics
 app.get('/api/stats', async (req, res) => {
   try {
-    console.log('📊 Fetching statistics...');
+    console.log('Fetching statistics...');
     
     const stats = {};
     
@@ -100,7 +100,7 @@ app.get('/api/stats', async (req, res) => {
     // Calculate total entries
     stats.totalEntries = stats.totalGames + stats.totalWebsites;
     
-    console.log('✅ Statistics fetched successfully!');
+    console.log('Statistics fetched successfully!');
     
     // Send JSON response
     res.json({
@@ -110,12 +110,43 @@ app.get('/api/stats', async (req, res) => {
     });
     
   } catch (error) {
-    console.error('❌ Error fetching statistics:', error);
+    console.error('Error fetching statistics:', error);
     res.status(500).json({
       success: false,
       error: error.message
     });
   }
+});
+
+// Get user total playtime
+app.get('/api/playtime', async (req, res) => {
+  try {
+    const playtimeSnapshot = await db.ref('users').once('value');
+    const playtimeData = playtimeSnapshot.val() || {};
+    
+    const playtime = Object.entries(playtimeData).map(([uid, user]) => ({
+      uid,
+      username: user.username,
+      createdAt: user.createdAt,
+      lastLoginAt: user.lastLoginAt,
+      playtime: user.playtime
+    }));
+    
+    // Sort by creation date (newest first)
+    playtime.sort((a, b) => {
+      const dateA = new Date(a.createdAt || 0).getTime();
+      const dateB = new Date(b.createdAt || 0).getTime();
+      return dateB - dateA;
+    });
+        
+    res.json({
+      success: true,
+      data: playtime
+    });
+  } catch (error) {
+    console.error('Error fetching users:', error);
+    res.status(500).json({ success: false, error: error.message });
+  } 
 });
 
 // Get list of all users with details
