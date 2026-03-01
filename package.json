@@ -1,0 +1,31 @@
+{
+  "name": "the-vault-user-dashboard",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nonemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/err422/The-Vault-User-Dashboard.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/err422/The-Vault-User-Dashboard/issues"
+  },
+  "homepage": "https://github.com/err422/The-Vault-User-Dashboard#readme",
+  "dependencies": {
+    "dotenv": "^17.3.1",
+    "express": "^5.2.1",
+    "firebase-admin": "^13.7.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  }
+}

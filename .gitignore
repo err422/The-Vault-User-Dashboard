@@ -1,0 +1,10 @@
+# These files are not commited to Github
+
+serviceAccountKey.json
+.env
+
+# Dependencies - these are deleted and regenerated all the time
+node_modules
+
+# System files
+.DS_Store
