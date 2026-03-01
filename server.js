@@ -21,6 +21,11 @@ admin.initializeApp({
 // Get database reference
 const db = admin.database();
 
+//======================================
+//Helper Functions
+//======================================
+
+
 // Helper function to format seconds
 function formatSeconds(seconds) { 
     const hours = Math.floor(seconds / 3600);
@@ -31,6 +36,77 @@ function formatSeconds(seconds) {
     }
     return `${minutes}m`
 }
+
+function calculateUserStats(uid, userData) {
+    const stats = { 
+        totalPlaytime: 0,
+        gamesPlayed: 0,
+        favoriteGame: { name: 'none', playtime: 0 },
+        level: 1,
+        xp: 0,
+        xpProgress: 0,
+        title: 'Novice'
+    };
+
+    // Calculate total playtime and games played
+    if (userData.playtime && userData.playtime.total) {
+        const gameTimes = userData.playtime.total;
+
+        stats.totalPlaytime = Object.values(gameTimes).reduce((sum, seconds) => {
+            return sum + (Number(seconds) || 0);
+        }, 0);
+
+        stats.gamesPlayed = Object.keys(gameTimes).length;
+
+        // Find favorite game
+        let maxTime = 0;
+        let favoriteGameId = null;
+
+        Object.entries(gameTimes).forEach(([GamepadHapticActuator, seconds]) => {
+            const time = Number(seconds) || 0;
+            if (time > maxTime) {
+                maxTime = time;
+                favoriteGameId = GamepadHapticActuator;
+            }
+        });
+
+        if (favoriteGameId) {
+            stats.favoriteGame = {
+                id: favoriteGameId,
+                name: favoriteGameId, // Would need to look up actual game name
+                playtime: maxTime
+            };
+        }
+    }
+
+    // Calculate XP (1 minute = 1xp)
+    stats.xp = Math.floor(stats.totalPlaytime / 60);
+
+    // Calculate level (level = floor(sqrt(xp / 100)) + 1)
+    stats.level = Math.floor(Math.sqrt(stats.xp / 100)) + 1;
+
+    // Calculate XP progress to next level
+    const xpForCurrentLevel = Math.pow(stats.level - 1, 2) * 100;
+    const xpForNextLevel = Math.pow(stats.level, 2) * 100;
+    const xpIntoLevel = stats.xp - xpForCurrentLevel;
+    const xpNeeded = xpForNextLevel - xpForCurrentLevel;
+    stats.xpProgress = (xpIntoLevel / xpNeeded) * 100;
+
+    // Get title based on level
+    if (stats.level < 5) stats.title = 'Novice';
+    else if (stats.level < 10) stats.title = 'Explorer';
+    else if (stats.level < 15) stats.title = 'Veteran';
+    else if (stats.level < 20) stats.title = 'Expert';
+    else if (stats.level < 30) stats.title = 'Master';
+    else if (stats.level < 50) stats.title = 'Gooner';
+    else stats.title = 'Get a life';
+
+    // Format playtime
+    stats.totalPlaytimeFormatted = formatSeconds(stats.totalPlaytime);
+
+    return stats;
+}
+
 
 
 // Get overall statistics for all users
@@ -131,7 +207,41 @@ app.get('/api/users', async(req, res) => {
     }
 });
 
+// Get specific user's detailed data
+app.get('/api/users/:uid', async (req, res) => {
+    try {
+        const { uid } = req.params;
 
+        const userSnapshot = await db.ref(`users/${uid}`).once('value');
+        const userData = userSnapshot.val();
+
+        if (!userData) {
+            return res.status(404).json({
+                success: false,
+                error: 'user not found'
+            });
+        }
+
+        // Calculate user stats
+        const stats = calculateUserStats(uid, userData);
+
+        res.json({
+            success: true,
+            data: {
+                uid,
+                ...userData,
+                stats
+            }
+        });
+
+    } catch (error) {
+        console.error('Error fetching user:', error);
+        res.status(500).json({
+            success: false,
+            error: error.message
+        });
+    }
+});
 
 
 // Start server
