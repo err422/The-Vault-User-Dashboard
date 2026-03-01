@@ -12,7 +12,6 @@ app.use(express.static('public'));
 
 // Initilize Firebase Admin SDK
 const serviceAccount = require('./serviceAccountKey.json');
-const { Timestamp } = require('firebase-admin/firestore');
 
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
@@ -22,8 +21,20 @@ admin.initializeApp({
 // Get database reference
 const db = admin.database();
 
+// Helper function to format seconds
+function formatSeconds(seconds) { 
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+
+    if (hours > 0) {
+        return `${hours}h ${minutes}m`;
+    }
+    return `${minutes}m`
+}
+
+
 // Get overall statistics for all users
-app.get('api/stats', async (req, res) => {
+app.get('/api/stats', async (req, res) => {
     try {
         console.log('Featching global stats...');
 
@@ -58,7 +69,7 @@ app.get('api/stats', async (req, res) => {
         Object.values(users).forEach(user => {
             if(user.playtime && user.playtime.total) {
                 const userPlaytime = Object.values(user.playtime.total).reduce((sum, seconds) => {
-                    return sum + (Number(secons) || 0);
+                    return sum + (Number(seconds) || 0);
                 }, 0);
                 totalPlaytimeSeconds += userPlaytime;
             }
@@ -83,16 +94,45 @@ app.get('api/stats', async (req, res) => {
     }
 });
 
-// Helper function to format seconds
-function formatSeconds(seconds) { 
-    const hours = Math.floor(seconds / 3600);
-    const minutes = Math.floor((seconds % 3600) / 60);
+// Get list of all users
+app.get('/api/users', async(req, res) => {
+    try {
+        const usersSnapshot = await db.ref('users').once('value');
+        const usersData = usersSnapshot.val() || {};
 
-    if (hours > 0) {
-        return `${hours}h ${minutes}m`;
+        // Convert to array w/ UIDs
+        const users = Object.entries(usersData).map(([uid, user]) => ({
+            uid,
+            username: user.username,
+            email: user.email,
+            createdAt: user.createdAt,
+            lastLoginAt: user.lastLoginAt
+        }));
+
+        // Sort by account creation date (newest first)
+        users.sort((a, b) => {
+            const dateA = new Date(a.createdAt || 0).getTime();
+            const dateB = new Date(b.createdAt || 0).getTime();
+            return dateB - dateA;
+        });
+
+        res.json({
+            success: true,
+            count: users.length,
+            data: users
+        });
+
+    } catch (error) {
+        console.error('Error fetching users:', error);
+        res.status(500).json({
+            success: false,
+            error: error.message
+        });
     }
-    return `${minutes}m`
-}
+});
+
+
+
 
 // Start server
 app.listen(PORT, () => {
