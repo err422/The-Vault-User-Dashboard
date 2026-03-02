@@ -1,111 +1,116 @@
-/* =====================================================
-   THE VAULT USER DASHBOARD — SHARED STYLESHEET
-   ===================================================== */
+/* ── Google Fonts ── */
+/* Same fonts as the Vault landing page */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
 
-/* -- Reset -- */
+/* ── Reset ── */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-/* -- Import fonts -- */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
-
-/* CSS Variables */
+/* ── Color system ──
+   These variables match the Vault landing page palette exactly.
+   Defining them once here means if you ever want to tweak a color,
+   you change it in one place and it updates everywhere. */
 :root {
   /* Backgrounds */
-  --bg: #000;
-  --bg-deep: #0d001a;
-  --bg-card: rgba(30, 10, 50, 0.70);
-  --bg-card-hover: rgba(143, 104, 225, 0.25); 
+  --bg-deep:    #000000;
+  --bg-purple:  #0d001a;
+  --bg-mid:     #050008;
+
+  /* Cards and surfaces */
+  --card:       rgba(30, 10, 50, 0.7);
+  --card-hover: rgba(40, 15, 65, 0.85);
 
   /* Borders */
-  --border: rgba(255, 255, 255, 0.07);
+  --border:  rgba(255, 255, 255, 0.07);
   --border2: rgba(255, 255, 255, 0.12);
-  --border-accent: rgba(143, 104, 255, 0.25);
 
   /* Text */
-  --text: #f0eeff;
-  --muted: rgba(255, 255, 255, 0.35);
+  --text:   #f0eeff;
+  --muted:  rgba(255, 255, 255, 0.35);
   --muted2: rgba(255, 255, 255, 0.55);
 
-  /* Main brand colors */
-  --pink: #fc72ff;
-  --purple: #8f67ff;
-  --blue: #487bff;
-
-  /* Semantic colors */
-  --green: #4ade80;
-  --red: #f87171;
-
-  /* Layout */
-  --topbar-h: 60px;
-  --sidebar-w: 265px;
-  --radius: 12px;
+  /* Accent colors (match the landing page gradient stops) */
+  --pink:   #fc72ff;
+  --purple: #8f68ff;
+  --blue:   #487bff;
+  --green:  #4ade80;
+  --red:    #f87171;
 }
 
-/* -- Body -- */
+/* ── Base ── */
 body {
   font-family: 'Poppins', sans-serif;
-  background: linear-gradient(to bottom, var(--bg-deep) 0%, #050008, var(--bg) 100%);
-  background-attachment: fixed;
-  min-height: 100hv;
+  /* Same gradient direction as the landing page */
+  background: linear-gradient(to bottom, var(--bg-purple) 0%, var(--bg-mid) 50%, var(--bg-deep) 100%);
+  min-height: 100vh;
   color: var(--text);
   line-height: 1.6;
 }
 
-/* -- Animated gradient text -- */
-.vault-text {
-  background: linear-gradient( to right, #fc72ff, #8f68ff, #487bff, #8f68ff, #fc72ff);
+/* ── Gradient text utility ──
+   This is the same animated gradient used for the "THE VAULT" heading
+   on the landing page. Adding class="gradient-text" to any element
+   gives it the animated pink→purple→blue sweep. */
+.gradient-text {
+  background: linear-gradient(to right, #fc72ff, #8f68ff, #487bff, #8f68ff, #fc72ff);
   background-size: 200%;
-  -webkit-background-clip:text;
+  -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  animation: vault-gradient 2.5s linear infinite;
+  animation: gradient-flow 2.5s linear infinite;
 }
 
-@keyframes vault-gradient {
+@keyframes gradient-flow {
   to { background-position: 200%; }
 }
 
-/* -- Loading spinner -- */
-@keyframes spin {
-  to {transform: rotate(360deg); }
-}
 
-/* -- Top nav bar -- */
-.vault-topbar {
-  height: var(--topbar-h);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 28px;
-  border-bottom: 1px solid var(--border);
-  background: rgba(13, 0, 26, 0.60);
-  background-filter: blur(20px);
+/* ================================================================
+   NAVBAR
+   Matches the .nav-bar from the landing page — glass pill style,
+   backdrop blur, same border radius and colors.
+================================================================ */
+
+.navbar {
   position: sticky;
   top: 0;
   z-index: 1000;
+  background: rgba(13, 0, 26, 0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border2);
 }
 
-/* -- Logo -- */
+.navbar-content {
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 0 28px;
+  height: 58px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
 
-.vault-logo {
+/* The "V" logo + "THE VAULT" text on the left */
+.navbar-brand {
   display: flex;
   align-items: center;
   gap: 10px;
-  font-size: 1.05rem;
+  text-decoration: none;
+  font-size: 1rem;
   font-weight: 800;
   letter-spacing: 0.06em;
-  text-deceration: none;
 }
 
-.vault-logo-icon {
+.navbar-brand-icon {
   width: 30px;
-  height: 20px;
+  height: 30px;
   border-radius: 8px;
-  background: linear-gradient(135deg, var(--pink), var(--purple), var(--blue));
+  background: linear-gradient(135deg, #fc72ff, #8f68ff, #487bff);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -115,327 +120,213 @@ body {
   flex-shrink: 0;
 }
 
-/* -- Glass pill nav -- */
-.vault-nav {
+/* The glass pill containing Home / My Stats links */
+.navbar-links {
   display: flex;
   gap: 4px;
   background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.10);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 2rem;
   padding: 5px;
-  background-filter: blur(10px);
+  backdrop-filter: blur(10px);
 }
 
-.vault-nav a {
+.navbar-links a {
   padding: 6px 18px;
   border-radius: 2rem;
   text-decoration: none;
-  font-size: 0.80;
+  font-size: 0.82rem;
   font-weight: 500;
-  color: rgba(255, 255, 255, 0.50);
-  transition: all 0.20s;
+  color: rgba(255, 255, 255, 0.5);
+  transition: all 0.2s;
   white-space: nowrap;
 }
 
-.vault-nav a:hover {
+.navbar-links a:hover {
   color: white;
   background: rgba(255, 255, 255, 0.06);
 }
 
-.vault-nav a.active {
+/* The active page link gets a purple pill background */
+.navbar-links a.active {
   background: rgba(143, 104, 255, 0.25);
   border: 1px solid rgba(143, 104, 255, 0.35);
   color: white;
 }
 
-/* -- Right side of topbar -- */
-.vault-topbar-right {
+/* Right side of navbar */
+.user-menu {
   display: flex;
   align-items: center;
   gap: 10px;
 }
 
-/* -- User chip: avatar circle + username + signout btn -- */
-.vault-user-chip {
+/* The user chip: avatar + username, glass pill */
+.user-chip {
   display: flex;
   align-items: center;
   gap: 8px;
   background: rgba(255, 255, 255, 0.06);
-  border: 1px solid var(--border2);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 2rem;
   padding: 6px 14px 6px 6px;
 }
 
-.vault-ava {
+.user-avatar {
   width: 26px;
-  weight: 26px;
+  height: 26px;
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--pink), var(--purple), var(--blue));
+  background: linear-gradient(135deg, #fc72ff, #8f68ff, #487bff);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.70rem;
+  font-size: 0.7rem;
   font-weight: 700;
   color: white;
-  flex-shrink: 0;
 }
 
-.vault-ava-name {
-  font-size: 0.82rem;
-  font-weight: 600;
-  color: var(--text); 
-}
-
-.vault-signout {
-  background: none;
-  border: none;
-  color: var(--muted);
-  font-size: 0.78rem;
-  cursor: pointer;
-  font-family: 'Poppins', sans-serif;
-  transition: color 0.20s;
-  padding: 0;
-}
-
-.vault-signin-btn {
-  padding: 7px 18px;
+/* Streak pill (shows 🔥 N day streak) */
+.streak-pill {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.7rem;
+  padding: 5px 12px;
   border-radius: 2rem;
-  background: rgba(143, 104, 255, 0.20);
-  border: 1px solid rgba(143, 104, 255, 0.35);
-  color: white;
-  font-size: 0.82rem;
-  font-weight: 600;
-  cursor: pointer;
-  font-family: 'Poppins', sans-serif;
-  text-decoration: none;
-  transition: all 0.20s;
-  display: inline-block;
+  background: rgba(248, 113, 113, 0.1);
+  border: 1px solid rgba(248, 113, 113, 0.25);
+  color: var(--red);
 }
 
-.vault-signin-btn:hover {
-  background: rgba(143, 104, 255, 0.35);
-}
 
-/* -- Page Layouts -- */
+/* ================================================================
+   LAYOUT
+================================================================ */
 
-/* Full-width layout (Homepage) */
-.vault-container {
-  max-width: 130px;
+.container {
+  max-width: 1300px;
   margin: 0 auto;
-  padding: 28px 24px;
+  padding: 32px 28px 80px;
 }
 
-/* Sidebar + main layout */
+/* Page header — used on the homepage above the global stats */
+.page-header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.page-header h1 {
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin-bottom: 6px;
+}
+
+.page-header p {
+  color: var(--muted2);
+  font-size: 0.9rem;
+}
+
+/* ── Sidebar layout ──
+   Used by My Stats and User Profile pages.
+   Two columns: 265px sidebar on the left, flexible main on the right.
+   
+   We use CSS Grid here instead of flexbox because grid gives us
+   explicit control over both columns at once. */
 .vault-layout {
   display: grid;
-  grid-template-columns: var(--sidebar-w) 1fr;
-  min-height: calc(100hv - var(topbar-h));
+  grid-template-columns: 265px 1fr;
+  background: rgba(13, 0, 26, 0.4);
+  border-radius: 18px;
+  overflow: hidden;
+  border: 1px solid rgba(143, 104, 255, 0.2);
+  box-shadow: 0 40px 120px rgba(143, 104, 255, 0.12);
+  min-height: 660px;
+  position: relative;
+}
+
+/* Ambient purple glow behind the whole layout */
+.vault-layout::before {
+  content: '';
+  position: absolute;
+  top: -100px;
+  left: -100px;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(ellipse, rgba(143, 104, 255, 0.06) 0%, transparent 70%);
+  pointer-events: none;
 }
 
 .vault-sidebar {
   border-right: 1px solid var(--border);
   display: flex;
-  flex-direction: colum;
-  background: rgba(13, 0, 26, 0.30);
+  flex-direction: column;
+  background: rgba(13, 0, 26, 0.3);
+  position: relative;
+  z-index: 1;
 }
 
 .vault-main {
   padding: 22px 26px;
-  overflow-y: auto;
-}
-
-/* -- SIDEBAR COMPONENTS -- */
-
-/* Profile block at the top of the sidebar */
-.vault-profile-hero {
-  padding: 24px;
-  border-bottom: 1px solid var(--border);
-  background: radial-gradient(
-    ellipse at 50% 0%,
-    rgba(143, 104, 255, 0.10) 0%,
-    transparent 70%
-  );
-}
-
-.vault-avatar {
-  width: 64px;
-  height: 64px;
-  border-radius: 14px;
-  border: 1.5px solid rgba(143, 104, 255, 0.40);
-  background: rgba(143, 104, 255, 0.08);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.6rem;
-  margin-bottom: 12px;
   position: relative;
+  z-index: 1;
 }
 
-/* Level badge pinned to bottom-right of avatar */
-.vault-level-badge {
-  position: absolute;
-  bottom: -7px;
-  right: -7px;
-  background: linear-gradient(135deg, var(--pink), var(--purple));
-  font-size: 0.55rem;
-  font-weight: 700;
-  font-family: 'IBM Plex Mono', monospace;
-  padding: 2px 6px;
-  border-radius: 4px;
-  color: white;
-  letter-spacing: 0.05em;
-  border: 1.5px solid var(--bg-deep);
+
+/* ================================================================
+   CARDS
+================================================================ */
+
+/* General purpose card — used on homepage for leaderboard, user grid */
+.card {
+  background: var(--card);
+  border: 1px solid var(--border2);
+  border-radius: 14px;
+  padding: 22px;
+  backdrop-filter: blur(10px);
+  margin-bottom: 16px;
 }
 
-.vault-pname {
-  font-size: 1rem;
-  font-weight: 700;
-  color: var(-text);
-  margin-bottom: 2px;
-}
-
-/* Title text under name (uses animated gradient */
-.vault-ptitle {
-  font-family: 'IDM Plex Mono', monospace;
-  font-size: 0.65rem;
-  background: linear-gradient(to right, var(--pink), var(--purple), var(--blue));
-  background-size: 200%;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  animation: vault-gradient 2.5s linear infinite;
-  letter-spacing: 0.10em;
-  text-transform: uppercase;
-  margin-bottom: 14px;
-}
-
-/* XP progress bar */
-.vault-xp-track {
-  width: 100%;
-  height: 5px;
-  background: rgba(255, 255, 255, 0.07);
-  border-radius: 3px;
-  overflow: hidden;
-  margin-bottom: px;
-}
-
-.vault-xp-fill {
-  height: 100%;
-  background: linear-gradient(90deg, var(--pink), var(--purple), var(--blue));
-  background-size: 200%;
-  animation: vault-gradient 2.5s linear infinite;
-  border-radius: 3px;
-  /* Width is set inline by JS: style="width: 72%" */
-  transition: width 0.8s ease;
-}
-
-.vault-xp-meta {
-  display: flex;
-  justify-content: space-between;
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.58rem;
-  color: var(--muted);
-}
-
-/* Quick stat rows inside the sidebar */
-.valut-stat-rows {
-  padding: 14px 24px;
-  border-bottom: 1px solid vaR(--border);
-}
-
-.vault-stat-row {
+.card-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 7px 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  margin-bottom: 18px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--border);
 }
 
-.vault-stat-row:last-child { border-bottom: none; }
-
-.vault-sk {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.68rem;
-  color: var(--muted2);
-  letter-spacing: 0.02rem;
-}
-
-.vault-sv {
-  font-size: 0.82rem;
-  font-weight: 600;
+.card-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+  font-weight: 700;
   color: var(--text);
 }
 
-.vault-sv.accent {
-  background: linear-gradient(to right, var(--pink), var(--purple));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.vault-sv.green { color: var(--green); }
-
-/* Sidebar navigation links */
-.vault-snav {
-  padding: 14px 12px;
-  flex: 1;
-}
-
-.vault-sitem {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 9px 14px;
-  border-radius: 12px;
-  font-size: 0.85rem;
-  font-weight: 500;
-  color: var(--muted2);
+.card-more {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.6rem;
+  color: var(--muted);
   cursor: pointer;
-  transition: all 0.20s;
-  margin-bottom: 2px;
+  transition: color 0.2s;
   text-decoration: none;
 }
 
-.vault-sitem:hover {
-  background: rgba(255, 255, 255, 0.05);
-  color: white;
-}
+.card-more:hover { color: var(--purple); }
 
-.vault-sitem.active {
-  background: rgba(143, 104, 255, 0.12);
-  border: 1px solid rgba(143, 104, 255, 0.20);
-  color: white;
-}
 
-.vault-sitem.active .vault-sdot {
-  background: var(--purple);
-  box-shadow: 0 0 6px rgba(143, 104, 255, 0.60);
-}
+/* ================================================================
+   SECTION HEADERS (inside .vault-main)
+   The small uppercase label with the gradient line before it.
+================================================================ */
 
-.vault-sdot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.20);
-  flex-shrink: 0;
-  transition: all 0.20s;
-}
-
-/* ═══════════════════════════════════════════════════
-   SECTION HEADERS
-
-   The small uppercase label used above each content
-   block. Has a gradient left-rule before it.
-   ═══════════════════════════════════════════════════ */
-
-.vault-sec-head {
+.sec-head {
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin-bottom: 14px;
 }
 
-.vault-sec-title {
+.sec-title {
   font-family: 'IBM Plex Mono', monospace;
   font-size: 0.62rem;
   text-transform: uppercase;
@@ -446,74 +337,74 @@ body {
   gap: 8px;
 }
 
-/* The short gradient rule before section titles */
-.vault-sec-title::before {
+/* The short gradient line that appears before each section title */
+.sec-title::before {
   content: '';
   width: 14px;
   height: 1px;
-  background: linear-gradient(to right, var(--pink), var(--purple));
+  background: linear-gradient(to right, #fc72ff, #8f68ff);
   opacity: 0.6;
 }
 
-.vault-sec-more {
+.sec-more {
   font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.60rem;
+  font-size: 0.6rem;
   color: var(--muted);
   cursor: pointer;
-  transition: color 0.20s;
   text-decoration: none;
+  transition: color 0.2s;
 }
 
-.vault-sec-more:hover { color: var(--purple); }
+.sec-more:hover { color: var(--purple); }
 
-/* ═══════════════════════════════════════════════════
+
+/* ================================================================
    KPI CARDS
+   The four-across strip of stat cards used at the top of
+   My Stats and User Profile pages.
+================================================================ */
 
-   The four stat cards shown at the top of each page.
-   Each has a percentile badge, a big number, and a label.
-   ═══════════════════════════════════════════════════ */
-
-.vault-kpi-strip {
+.kpi-strip {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 10px;
-  margin-bottom: 22px;
+  margin-bottom: 20px;
 }
 
-.vault-kpi {
-  background: var(--bg-card);
+.kpi-card {
+  background: var(--card);
   border: 1px solid var(--border2);
-  border-radius: var(--radius);
+  border-radius: 12px;
   padding: 15px;
   backdrop-filter: blur(10px);
   transition: all 0.25s;
-  cursor: default;
   position: relative;
   overflow: hidden;
+  cursor: default;
 }
 
-.vault-kpi:hover {
-  background: var(--bg-card-hover);
-  border-color: var(--border-accent);
+.kpi-card:hover {
+  background: var(--card-hover);
+  border-color: rgba(143, 104, 255, 0.25);
   transform: translateY(-2px);
-  box-shadow: 0 8px 32px rgba(143, 104, 255, 0.10);
+  box-shadow: 0 8px 32px rgba(143, 104, 255, 0.1);
 }
 
-/* Gradient top-border that appears on hover */
-.vault-kpi::after {
+/* The gradient line that appears at the top of a KPI card on hover */
+.kpi-card::after {
   content: '';
   position: absolute;
   top: 0; left: 0; right: 0;
   height: 1.5px;
-  background: linear-gradient(to right, var(--pink), var(--purple), var(--blue));
+  background: linear-gradient(to right, #fc72ff, #8f68ff, #487bff);
   opacity: 0;
   transition: opacity 0.25s;
 }
 
-.vault-kpi:hover::after { opacity: 1; }
+.kpi-card:hover::after { opacity: 1; }
 
-/* Percentile badge (e.g. "Top 21%") */
-.vault-kpi-pct {
+/* The small pill badge inside each KPI card (e.g. "Top 21%") */
+.kpi-badge {
   display: inline-flex;
   align-items: center;
   font-family: 'IBM Plex Mono', monospace;
@@ -525,13 +416,13 @@ body {
   margin-bottom: 10px;
 }
 
-/* Four badge colour variants */
-.pct-purple { background: rgba(143,104,255,0.15); color: #b99dff; border: 1px solid rgba(143,104,255,0.30); }
-.pct-blue   { background: rgba(72,123,255,0.15);  color: #80a8ff; border: 1px solid rgba(72,123,255,0.30);  }
-.pct-green  { background: rgba(74,222,128,0.10);  color: #4ade80; border: 1px solid rgba(74,222,128,0.25);  }
-.pct-red    { background: rgba(248,113,113,0.10); color: #f87171; border: 1px solid rgba(248,113,113,0.25); }
+/* Four badge color variants */
+.badge-purple { background: rgba(143,104,255,0.15); color: #b99dff; border: 1px solid rgba(143,104,255,0.3); }
+.badge-blue   { background: rgba(72,123,255,0.15);  color: #80a8ff; border: 1px solid rgba(72,123,255,0.3);  }
+.badge-green  { background: rgba(74,222,128,0.1);   color: #4ade80; border: 1px solid rgba(74,222,128,0.25); }
+.badge-red    { background: rgba(248,113,113,0.1);  color: #f87171; border: 1px solid rgba(248,113,113,0.25);}
 
-.vault-kpi-val {
+.kpi-value {
   font-size: 1.45rem;
   font-weight: 800;
   color: var(--text);
@@ -540,40 +431,223 @@ body {
   letter-spacing: -0.02em;
 }
 
-.vault-kpi-label {
+.kpi-label {
   font-size: 0.72rem;
   color: var(--muted2);
   font-weight: 500;
 }
 
-/* ═══════════════════════════════════════════════════
-   GENERIC CARD
+/* Homepage version of stats (same look, slightly different grid) */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+  margin-bottom: 20px;
+}
 
-   Use .vault-card for any panel that isn't a KPI.
-   Leaderboard, chart, game list, etc.
-   ═══════════════════════════════════════════════════ */
 
-.vault-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border2);
-  border-radius: var(--radius);
-  padding: 18px;
-  backdrop-filter: blur(10px);
+/* ================================================================
+   SIDEBAR COMPONENTS
+================================================================ */
+
+/* Profile hero section at the top of the sidebar */
+.sidebar-profile {
+  padding: 24px;
+  border-bottom: 1px solid var(--border);
+  /* Subtle radial glow from the top */
+  background: radial-gradient(ellipse at 50% 0%, rgba(143,104,255,0.1) 0%, transparent 70%);
+}
+
+/* The big avatar box */
+.sidebar-avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 14px;
+  border: 1.5px solid rgba(143, 104, 255, 0.4);
+  background: rgba(143, 104, 255, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.6rem;
+  margin-bottom: 12px;
+  position: relative;
+}
+
+/* "LVL 12" badge overlapping the bottom-right of the avatar */
+.sidebar-level-badge {
+  position: absolute;
+  bottom: -7px;
+  right: -7px;
+  background: linear-gradient(135deg, #fc72ff, #8f68ff);
+  font-size: 0.55rem;
+  font-weight: 700;
+  font-family: 'IBM Plex Mono', monospace;
+  padding: 2px 6px;
+  border-radius: 4px;
+  color: white;
+  letter-spacing: 0.05em;
+  /* Border matches the sidebar background so it looks "cut out" */
+  border: 1.5px solid #0d001a;
+}
+
+.sidebar-name {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 2px;
+}
+
+/* Title (Novice, Explorer, Veteran...) — animated gradient text */
+.sidebar-title {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.65rem;
+  background: linear-gradient(to right, #fc72ff, #8f68ff, #487bff, #8f68ff, #fc72ff);
+  background-size: 200%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradient-flow 2.5s linear infinite;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
   margin-bottom: 14px;
 }
 
-/* ═══════════════════════════════════════════════════
-   BAR CHART (7-day activity)
-   ═══════════════════════════════════════════════════ */
+/* XP progress bar track */
+.xp-track {
+  width: 100%;
+  height: 5px;
+  background: rgba(255, 255, 255, 0.07);
+  border-radius: 3px;
+  overflow: hidden;
+  margin-bottom: 5px;
+}
 
-.vault-bars {
+/* XP fill — also animated gradient, width set via inline style in JS */
+.xp-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #fc72ff, #8f68ff, #487bff, #8f68ff, #fc72ff);
+  background-size: 200%;
+  animation: gradient-flow 2.5s linear infinite;
+  border-radius: 3px;
+  /* Width is set dynamically: style="width: 72%" */
+}
+
+/* XP / level labels below the bar */
+.xp-meta {
+  display: flex;
+  justify-content: space-between;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.58rem;
+  color: var(--muted);
+}
+
+/* The current XP value gets the gradient treatment */
+.xp-highlight {
+  background: linear-gradient(to right, #fc72ff, #8f68ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Stat rows (global rank, total playtime, etc.) */
+.sidebar-stats {
+  padding: 14px 24px;
+  border-bottom: 1px solid var(--border);
+}
+
+.sidebar-stat-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 7px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.sidebar-stat-row:last-child { border-bottom: none; }
+
+.sidebar-stat-key {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.68rem;
+  color: var(--muted2);
+  letter-spacing: 0.02em;
+}
+
+.sidebar-stat-val {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+/* Gradient accent for special values like rank */
+.sidebar-stat-val.accent {
+  background: linear-gradient(to right, #fc72ff, #8f68ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.sidebar-stat-val.green { color: var(--green); }
+
+/* Navigation links in the sidebar */
+.sidebar-nav { padding: 14px 12px; flex: 1; }
+
+.sidebar-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 14px;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--muted2);
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-bottom: 2px;
+  text-decoration: none;
+}
+
+.sidebar-nav-item:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: white;
+}
+
+.sidebar-nav-item.active {
+  background: rgba(143, 104, 255, 0.12);
+  border: 1px solid rgba(143, 104, 255, 0.2);
+  color: white;
+}
+
+/* The small dot indicator next to each nav item */
+.sidebar-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  flex-shrink: 0;
+  transition: all 0.2s;
+}
+
+.sidebar-nav-item.active .sidebar-dot {
+  background: var(--purple);
+  box-shadow: 0 0 6px var(--purple);
+}
+
+
+/* ================================================================
+   BAR CHART (manual, no library needed)
+   Used for the 7-day activity chart inside vault-main.
+   The actual Chart.js canvas sits in a .card — these classes
+   style the simpler homepage bar chart if you add one there.
+================================================================ */
+
+.bar-chart {
   display: flex;
   align-items: flex-end;
   gap: 7px;
   height: 88px;
 }
 
-.vault-bar-col {
+.bar-col {
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -581,126 +655,188 @@ body {
   gap: 5px;
 }
 
-.vault-bar {
+.bar {
   width: 100%;
   border-radius: 4px 4px 0 0;
   background: rgba(143, 104, 255, 0.18);
   min-height: 3px;
-  transition: background 0.20s;
+  transition: background 0.2s;
   cursor: pointer;
 }
 
-.vault-bar:hover { background: rgba(143, 104, 255, 0.45); }
+.bar:hover { background: rgba(143, 104, 255, 0.45); }
 
-/* Today's bar uses the animated gradient */
-.vault-bar.today {
-  background: linear-gradient(to top, var(--pink) 0%, var(--purple) 60%, var(--blue) 100%);
-  box-shadow: 0 0 12px rgba(143, 104, 255, 0.40);
+/* Today's bar uses the full gradient and a glow */
+.bar.today {
+  background: linear-gradient(to top, #fc72ff 0%, #8f68ff 60%, #487bff 100%);
+  box-shadow: 0 0 12px rgba(143, 104, 255, 0.4);
 }
 
-.vault-bar-lbl {
+.bar-label {
   font-family: 'IBM Plex Mono', monospace;
   font-size: 0.55rem;
   color: var(--muted);
 }
 
-.vault-bar-lbl.today { color: var(--purple); }
+.bar-label.today { color: var(--purple); }
 
-/* ═══════════════════════════════════════════════════
+
+/* ================================================================
    LEADERBOARD ENTRIES
-   ═══════════════════════════════════════════════════ */
+================================================================ */
 
-.vault-lb-entry {
+.lb-entry {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 8px;
-  border-radius: 8px;
-  transition: background 0.15s;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: 10px;
   cursor: pointer;
+  transition: all 0.15s;
   text-decoration: none;
+  margin-bottom: 6px;
 }
 
-.vault-lb-entry:hover { background: rgba(255, 255, 255, 0.04); }
-
-/* The "you" row is highlighted */
-.vault-lb-entry.you {
-  background: rgba(143, 104, 255, 0.10);
-  border: 1px solid rgba(143, 104, 255, 0.20);
+.lb-entry:hover {
+  background: rgba(255, 255, 255, 0.04);
+  transform: translateX(3px);
 }
 
-.vault-lb-pos {
+/* Top 3 entries get a subtle purple tint */
+.lb-entry.top3 {
+  background: rgba(143, 104, 255, 0.08);
+  border: 1px solid rgba(143, 104, 255, 0.15);
+}
+
+/* The logged-in user's entry gets a stronger highlight */
+.lb-entry.you {
+  background: rgba(143, 104, 255, 0.12);
+  border: 1px solid rgba(143, 104, 255, 0.25);
+}
+
+.lb-rank {
   font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.68rem;
+  font-size: 0.75rem;
   color: var(--muted);
-  min-width: 22px;
-  text-align: right;
+  min-width: 32px;
+  text-align: center;
 }
 
-.vault-lb-name {
-  font-size: 0.82rem;
+.lb-info { flex: 1; }
+
+.lb-name {
+  font-size: 0.88rem;
   font-weight: 600;
   color: var(--text);
-  flex: 1;
+  margin-bottom: 1px;
 }
 
-/* Own username gets gradient text */
-.vault-lb-name.you-name {
-  background: linear-gradient(to right, var(--pink), var(--purple));
+/* The current user's name uses gradient text */
+.lb-name.you {
+  background: linear-gradient(to right, #fc72ff, #8f68ff);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
-.vault-lb-meta {
+.lb-sub {
+  font-size: 0.7rem;
+  color: var(--muted);
+  font-family: 'IBM Plex Mono', monospace;
+}
+
+.lb-time {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.78rem;
+  color: var(--muted2);
+}
+
+
+/* ================================================================
+   USER GRID (homepage)
+================================================================ */
+
+.user-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.user-card {
+  background: var(--card);
+  border: 1px solid var(--border2);
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-decoration: none;
+  display: block;
+}
+
+.user-card:hover {
+  background: var(--card-hover);
+  border-color: rgba(143, 104, 255, 0.25);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 30px rgba(143, 104, 255, 0.1);
+}
+
+.user-card-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: rgba(143, 104, 255, 0.1);
+  border: 1px solid rgba(143, 104, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  margin: 0 auto 10px;
+}
+
+.user-card-name {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+
+.user-card-date {
   font-family: 'IBM Plex Mono', monospace;
   font-size: 0.62rem;
-  color: var(--muted2);
+  color: var(--muted);
 }
 
-.vault-lb-time {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.68rem;
-  color: var(--muted2);
-}
 
-.vault-lb-divider {
-  height: 1px;
-  background: var(--border);
-  margin: 6px 0;
-}
+/* ================================================================
+   LIST ITEMS (top games / websites inside vault-main)
+================================================================ */
 
-/* ═══════════════════════════════════════════════════
-   LIST ITEMS  (Top Games)
-   ═══════════════════════════════════════════════════ */
-
-.vault-list-item {
+.list-item {
   display: flex;
   align-items: center;
   gap: 10px;
   padding: 9px 0;
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  cursor: pointer;
+  transition: padding-left 0.15s;
 }
 
-.vault-list-item:last-child { border-bottom: none; }
+.list-item:last-child { border-bottom: none; }
+.list-item:hover { padding-left: 4px; }
 
-.vault-li-num {
+.list-num {
   font-family: 'IBM Plex Mono', monospace;
   font-size: 0.62rem;
   color: var(--muted);
-  min-width: 18px;
+  min-width: 20px;
 }
 
-.vault-li-icon { font-size: 1.1rem; width: 22px; text-align: center; }
+.list-icon { font-size: 1.1rem; width: 24px; text-align: center; }
+.list-name { font-size: 0.86rem; font-weight: 600; color: var(--text); flex: 1; }
 
-.vault-li-name {
-  font-size: 0.86rem;
-  font-weight: 600;
-  color: var(--text);
-  flex: 1;
-}
-
-.vault-li-bar-wrap {
+.list-bar-wrap {
   width: 70px;
   height: 3px;
   background: rgba(255, 255, 255, 0.07);
@@ -708,376 +844,192 @@ body {
   overflow: hidden;
 }
 
-.vault-li-bar {
+.list-bar {
   height: 100%;
   border-radius: 2px;
-  background: linear-gradient(to right, var(--purple), var(--blue));
+  background: linear-gradient(to right, #8f68ff, #487bff);
 }
 
-.vault-li-time {
+.list-time {
   font-family: 'IBM Plex Mono', monospace;
   font-size: 0.65rem;
   color: var(--muted2);
-  min-width: 38px;
+  min-width: 40px;
   text-align: right;
 }
 
-/* ═══════════════════════════════════════════════════
-   USER CARDS  (Homepage all-users grid)
-   ═══════════════════════════════════════════════════ */
 
-.vault-users-grid {
+/* ================================================================
+   ACHIEVEMENTS GRID
+================================================================ */
+
+.achievement-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 12px;
-  margin-top: 16px;
-}
-
-.vault-user-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border2);
-  border-radius: var(--radius);
-  padding: 20px;
-  cursor: pointer;
-  transition: all 0.20s;
-  text-decoration: none;
-  display: block;
-  text-align: center;
-}
-
-.vault-user-card:hover {
-  background: var(--bg-card-hover);
-  border-color: var(--border-accent);
-  transform: translateY(-3px);
-  box-shadow: 0 8px 24px rgba(143, 104, 255, 0.10);
-}
-
-.vault-user-card-avatar {
-  font-size: 2.2rem;
-  margin-bottom: 10px;
-}
-
-.vault-user-card-name {
-  font-size: 0.90rem;
-  font-weight: 700;
-  color: var(--text);
-  margin-bottom: 4px;
-}
-
-.vault-user-card-date {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.60rem;
-  color: var(--muted);
-}
-
-/* ═══════════════════════════════════════════════════
-   SEARCH INPUT
-   ═══════════════════════════════════════════════════ */
-
-.vault-search {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid var(--border2);
-  border-radius: 2rem;
-  padding: 10px 18px;
-  color: var(--text);
-  font-size: 0.85rem;
-  font-family: 'Poppins', sans-serif;
-  outline: none;
-  width: 260px;
-  transition: all 0.20s;
-}
-
-.vault-search:focus {
-  border-color: rgba(143, 104, 255, 0.40);
-  background: rgba(143, 104, 255, 0.06);
-}
-
-.vault-search::placeholder { color: var(--muted); }
-
-/* ═══════════════════════════════════════════════════
-   SIGN-IN FORM  (shown on My Stats when logged out)
-   ═══════════════════════════════════════════════════ */
-
-.vault-auth-page {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: calc(100vh - var(--topbar-h));
-  padding: 40px 20px;
-}
-
-.vault-auth-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border2);
-  border-radius: 16px;
-  padding: 40px;
-  width: 100%;
-  max-width: 420px;
-  backdrop-filter: blur(20px);
-}
-
-.vault-auth-title {
-  font-size: 1.4rem;
-  font-weight: 800;
-  color: var(--text);
-  margin-bottom: 6px;
-}
-
-.vault-auth-sub {
-  font-size: 0.82rem;
-  color: var(--muted2);
-  margin-bottom: 28px;
-}
-
-.vault-form-group { margin-bottom: 18px; }
-
-.vault-form-label {
-  display: block;
-  font-size: 0.78rem;
-  font-weight: 600;
-  color: var(--muted2);
-  margin-bottom: 8px;
-  letter-spacing: 0.03em;
-}
-
-.vault-input {
-  width: 100%;
-  padding: 12px 16px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid var(--border2);
-  border-radius: 10px;
-  color: var(--text);
-  font-size: 0.90rem;
-  font-family: 'Poppins', sans-serif;
-  outline: none;
-  transition: all 0.20s;
-}
-
-.vault-input:focus {
-  border-color: rgba(143, 104, 255, 0.50);
-  background: rgba(143, 104, 255, 0.06);
-}
-
-.vault-input::placeholder { color: var(--muted); }
-
-.vault-btn-primary {
-  width: 100%;
-  padding: 12px;
-  background: linear-gradient(
-    135deg,
-    rgba(252, 114, 255, 0.30),
-    rgba(143, 104, 255, 0.30)
-  );
-  border: 1px solid rgba(143, 104, 255, 0.40);
-  border-radius: 10px;
-  color: white;
-  font-size: 0.90rem;
-  font-weight: 700;
-  font-family: 'Poppins', sans-serif;
-  cursor: pointer;
-  transition: all 0.20s;
-  margin-top: 6px;
-}
-
-.vault-btn-primary:hover {
-  background: linear-gradient(
-    135deg,
-    rgba(252, 114, 255, 0.45),
-    rgba(143, 104, 255, 0.45)
-  );
-  transform: translateY(-1px);
-  box-shadow: 0 4px 16px rgba(143, 104, 255, 0.20);
-}
-
-/* ═══════════════════════════════════════════════════
-   ACHIEVEMENT BADGES
-   ═══════════════════════════════════════════════════ */
-
-.vault-achievements-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(155px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
   gap: 12px;
 }
 
-.vault-achievement {
-  background: var(--bg-card);
+.achievement-card {
+  background: var(--card);
   border: 1px solid var(--border2);
-  border-radius: var(--radius);
+  border-radius: 12px;
   padding: 18px;
   text-align: center;
-  transition: all 0.20s;
+  transition: all 0.2s;
 }
 
-.vault-achievement.unlocked {
+/* Unlocked: purple tint */
+.achievement-card.unlocked {
   background: rgba(143, 104, 255, 0.12);
-  border-color: rgba(143, 104, 255, 0.30);
+  border-color: rgba(143, 104, 255, 0.3);
 }
 
-.vault-achievement.locked {
-  opacity: 0.40;
-  filter: grayscale(80%);
+/* Locked: faded and desaturated */
+.achievement-card.locked {
+  opacity: 0.45;
+  filter: grayscale(60%);
 }
 
-.vault-achievement-icon { font-size: 2.2rem; margin-bottom: 8px; }
+.achievement-icon  { font-size: 2.5rem; margin-bottom: 8px; }
+.achievement-name  { font-size: 0.82rem; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+.achievement-desc  { font-size: 0.7rem; color: var(--muted2); margin-bottom: 8px; line-height: 1.4; }
 
-.vault-achievement-name {
-  font-size: 0.82rem;
-  font-weight: 700;
-  color: var(--text);
-  margin-bottom: 4px;
-}
+.achievement-status-unlocked { font-size: 0.68rem; color: var(--green); font-weight: 600; }
+.achievement-status-locked   { font-size: 0.68rem; color: var(--muted); }
 
-.vault-achievement-desc {
-  font-size: 0.68rem;
-  color: var(--muted2);
-  margin-bottom: 10px;
-}
 
-.vault-achievement-status {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.62rem;
-  font-weight: 600;
-}
+/* ================================================================
+   BUTTONS
+================================================================ */
 
-.vault-achievement.unlocked .vault-achievement-status { color: var(--green); }
-.vault-achievement.locked  .vault-achievement-status { color: var(--muted); }
-
-/* ═══════════════════════════════════════════════════
-   LOADING & ERROR STATES
-   ═══════════════════════════════════════════════════ */
-
-.vault-loading {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: calc(100vh - var(--topbar-h));
-  gap: 20px;
-  color: var(--muted2);
-  font-size: 0.90rem;
-}
-
-.vault-spinner {
-  width: 40px;
-  height: 40px;
-  border: 3px solid rgba(143, 104, 255, 0.20);
-  border-top-color: var(--purple);
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-}
-
-.vault-error {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: calc(100vh - var(--topbar-h));
-  padding: 40px;
-}
-
-.vault-error-card {
-  background: rgba(248, 113, 113, 0.10);
-  border: 1px solid rgba(248, 113, 113, 0.25);
-  border-radius: 16px;
-  padding: 36px;
-  max-width: 400px;
-  width: 100%;
-  text-align: center;
-}
-
-.vault-error-card h2 {
-  font-size: 1.2rem;
-  font-weight: 700;
-  color: var(--red);
-  margin-bottom: 8px;
-}
-
-.vault-error-card p {
-  font-size: 0.85rem;
-  color: var(--muted2);
-  margin-bottom: 20px;
-}
-
-.vault-btn-secondary {
-  padding: 10px 20px;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid var(--border2);
-  border-radius: 10px;
-  color: var(--muted2);
+.btn {
+  padding: 10px 22px;
+  border: none;
+  border-radius: 2rem;
   font-size: 0.85rem;
   font-weight: 600;
-  font-family: 'Poppins', sans-serif;
   cursor: pointer;
-  transition: all 0.20s;
+  transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   text-decoration: none;
-  display: inline-block;
+  font-family: 'Poppins', sans-serif;
+  background: none;
 }
 
-.vault-btn-secondary:hover {
-  background: rgba(255, 255, 255, 0.10);
+/* Primary: animated gradient (same as landing page CTA) */
+.btn-primary {
+  background: linear-gradient(135deg, #fc72ff, #8f68ff, #487bff, #8f68ff, #fc72ff);
+  background-size: 200%;
+  animation: gradient-flow 2.5s linear infinite;
   color: white;
 }
 
-.vault-empty {
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(143, 104, 255, 0.4);
+}
+
+/* Secondary: glass pill */
+.btn-secondary {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: var(--text);
+}
+
+.btn-secondary:hover { background: rgba(255, 255, 255, 0.12); }
+
+.btn-sm    { padding: 6px 16px; font-size: 0.78rem; }
+.btn-block { width: 100%; justify-content: center; }
+
+
+/* ================================================================
+   FORMS
+================================================================ */
+
+.form-group { margin-bottom: 18px; }
+
+.form-label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: var(--muted2);
+}
+
+.form-input {
+  width: 100%;
+  padding: 11px 16px;
+  border: 1px solid var(--border2);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text);
+  font-size: 0.9rem;
+  font-family: 'Poppins', sans-serif;
+  transition: all 0.2s;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: rgba(143, 104, 255, 0.4);
+  background: rgba(143, 104, 255, 0.06);
+}
+
+.form-input::placeholder { color: var(--muted); }
+
+
+/* ================================================================
+   LOADING & STATES
+================================================================ */
+
+.loading {
   text-align: center;
-  padding: 48px 20px;
+  padding: 80px 20px;
+  color: var(--muted2);
+}
+
+/* Two-tone spinner using the pink/purple gradient */
+.spinner {
+  width: 44px;
+  height: 44px;
+  border: 3px solid rgba(255, 255, 255, 0.08);
+  border-top-color: var(--purple);
+  border-right-color: var(--pink);
+  border-radius: 50%;
+  margin: 0 auto 16px;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.error-message {
+  background: rgba(248, 113, 113, 0.1);
+  border: 1px solid rgba(248, 113, 113, 0.25);
+  color: var(--red);
+  padding: 20px;
+  border-radius: 12px;
+  text-align: center;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
   color: var(--muted);
 }
 
-.vault-empty-icon {
+.empty-state-icon {
   font-size: 3rem;
-  margin-bottom: 12px;
-  opacity: 0.40;
+  margin-bottom: 16px;
+  opacity: 0.5;
 }
 
-.vault-empty p { font-size: 0.88rem; }
 
-/* ═══════════════════════════════════════════════════
-   TOAST NOTIFICATIONS
-   ═══════════════════════════════════════════════════ */
+/* ================================================================
+   RESPONSIVE
+================================================================ */
 
-.vault-toast {
-  position: fixed;
-  bottom: 24px;
-  right: 24px;
-  padding: 14px 22px;
-  border-radius: 10px;
-  font-size: 0.88rem;
-  font-weight: 600;
-  color: white;
-  z-index: 10000;
-  animation: vault-toast-in 0.30s ease;
-  backdrop-filter: blur(10px);
-}
-
-.vault-toast.success {
-  background: rgba(74, 222, 128, 0.20);
-  border: 1px solid rgba(74, 222, 128, 0.35);
-}
-
-.vault-toast.error {
-  background: rgba(248, 113, 113, 0.20);
-  border: 1px solid rgba(248, 113, 113, 0.35);
-}
-
-.vault-toast.info {
-  background: rgba(143, 104, 255, 0.20);
-  border: 1px solid rgba(143, 104, 255, 0.35);
-}
-
-@keyframes vault-toast-in {
-  from { transform: translateX(80px); opacity: 0; }
-  to   { transform: translateX(0);    opacity: 1; }
-}
-
-@keyframes vault-toast-out {
-  from { transform: translateX(0);    opacity: 1; }
-  to   { transform: translateX(80px); opacity: 0; }
-}
-
-/* ═══════════════════════════════════════════════════
-   RESPONSIVE  (collapses sidebar on small screens)
-   ═══════════════════════════════════════════════════ */
-
+/* Stack sidebar below main on narrow screens */
 @media (max-width: 900px) {
   .vault-layout {
     grid-template-columns: 1fr;
@@ -1086,19 +1038,14 @@ body {
     border-right: none;
     border-bottom: 1px solid var(--border);
   }
-  .vault-kpi-strip {
+  .kpi-strip {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
 @media (max-width: 600px) {
-  .vault-kpi-strip {
-    grid-template-columns: 1fr;
-  }
-  .vault-topbar {
-    padding: 0 16px;
-  }
-  .vault-nav {
-    display: none; /* Hide pill nav on very small screens */
-  }
+  .container { padding: 20px 16px 60px; }
+  .navbar-content { padding: 0 16px; }
+  .kpi-strip { grid-template-columns: 1fr 1fr; }
+  .page-header h1 { font-size: 1.8rem; }
 }
