@@ -13,10 +13,10 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-firebaseConfig.initializeApp(firebaseConfig);
+firebase.initializeApp(firebaseConfig);
 
 // Get service references
-const auth = firebaseConfig.auth();
-const database = firebaseConfig.database();
+const auth = firebase.auth();
+const database = firebase.database();
 
 console.log('Firebase initialized in browser');

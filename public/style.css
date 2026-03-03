@@ -1,1051 +1,393 @@
-/* ── Google Fonts ── */
-/* Same fonts as the Vault landing page */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+/* =================================
+   BASE STYLES
+   ================================= */
 
-/* ── Reset ── */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-/* ── Color system ──
-   These variables match the Vault landing page palette exactly.
-   Defining them once here means if you ever want to tweak a color,
-   you change it in one place and it updates everywhere. */
 :root {
-  /* Backgrounds */
-  --bg-deep:    #000000;
-  --bg-purple:  #0d001a;
-  --bg-mid:     #050008;
-
-  /* Cards and surfaces */
-  --card:       rgba(30, 10, 50, 0.7);
-  --card-hover: rgba(40, 15, 65, 0.85);
-
-  /* Borders */
-  --border:  rgba(255, 255, 255, 0.07);
-  --border2: rgba(255, 255, 255, 0.12);
-
-  /* Text */
-  --text:   #f0eeff;
-  --muted:  rgba(255, 255, 255, 0.35);
-  --muted2: rgba(255, 255, 255, 0.55);
-
-  /* Accent colors (match the landing page gradient stops) */
-  --pink:   #fc72ff;
-  --purple: #8f68ff;
-  --blue:   #487bff;
-  --green:  #4ade80;
-  --red:    #f87171;
+  /* Colors */
+  --primary: #667eea;
+  --secondary: #764ba2;
+  --success: #27ae60;
+  --warning: #f39c12;
+  --danger: #e74c3c;
+  
+  /* Gradients */
+  --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  
+  /* Shadows */
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 15px rgba(0, 0, 0, 0.15);
+  --shadow-lg: 0 8px 25px rgba(0, 0, 0, 0.2);
+  
+  /* Border */
+  --border-radius: 12px;
+  --border-color: rgba(255, 255, 255, 0.1);
 }
 
-/* ── Base ── */
 body {
-  font-family: 'Poppins', sans-serif;
-  /* Same gradient direction as the landing page */
-  background: linear-gradient(to bottom, var(--bg-purple) 0%, var(--bg-mid) 50%, var(--bg-deep) 100%);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: var(--gradient-primary);
   min-height: 100vh;
-  color: var(--text);
+  color: #333;
   line-height: 1.6;
 }
 
-/* ── Gradient text utility ──
-   This is the same animated gradient used for the "THE VAULT" heading
-   on the landing page. Adding class="gradient-text" to any element
-   gives it the animated pink→purple→blue sweep. */
-.gradient-text {
-  background: linear-gradient(to right, #fc72ff, #8f68ff, #487bff, #8f68ff, #fc72ff);
-  background-size: 200%;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  animation: gradient-flow 2.5s linear infinite;
-}
-
-@keyframes gradient-flow {
-  to { background-position: 200%; }
-}
-
-
-/* ================================================================
-   NAVBAR
-   Matches the .nav-bar from the landing page — glass pill style,
-   backdrop blur, same border radius and colors.
-================================================================ */
+/* =================================
+   NAVIGATION
+   ================================= */
 
 .navbar {
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border-color);
+  padding: 1rem 0;
   position: sticky;
   top: 0;
   z-index: 1000;
-  background: rgba(13, 0, 26, 0.7);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-bottom: 1px solid var(--border2);
 }
 
 .navbar-content {
-  max-width: 1300px;
+  max-width: 1400px;
   margin: 0 auto;
-  padding: 0 28px;
-  height: 58px;
+  padding: 0 20px;
   display: flex;
-  align-items: center;
   justify-content: space-between;
+  align-items: center;
   gap: 20px;
 }
 
-/* The "V" logo + "THE VAULT" text on the left */
 .navbar-brand {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: white;
+  text-decoration: none;
   display: flex;
   align-items: center;
   gap: 10px;
-  text-decoration: none;
-  font-size: 1rem;
-  font-weight: 800;
-  letter-spacing: 0.06em;
 }
 
-.navbar-brand-icon {
-  width: 30px;
-  height: 30px;
-  border-radius: 8px;
-  background: linear-gradient(135deg, #fc72ff, #8f68ff, #487bff);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.85rem;
-  font-weight: 900;
-  color: white;
-  flex-shrink: 0;
-}
-
-/* The glass pill containing Home / My Stats links */
 .navbar-links {
   display: flex;
-  gap: 4px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 2rem;
-  padding: 5px;
-  backdrop-filter: blur(10px);
+  gap: 20px;
+  align-items: center;
 }
 
 .navbar-links a {
-  padding: 6px 18px;
-  border-radius: 2rem;
+  color: rgba(255, 255, 255, 0.8);
   text-decoration: none;
-  font-size: 0.82rem;
   font-weight: 500;
-  color: rgba(255, 255, 255, 0.5);
-  transition: all 0.2s;
-  white-space: nowrap;
+  padding: 8px 16px;
+  border-radius: 8px;
+  transition: all 0.3s;
 }
 
 .navbar-links a:hover {
   color: white;
-  background: rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.1);
 }
 
-/* The active page link gets a purple pill background */
 .navbar-links a.active {
-  background: rgba(143, 104, 255, 0.25);
-  border: 1px solid rgba(143, 104, 255, 0.35);
   color: white;
+  background: rgba(255, 255, 255, 0.2);
 }
 
-/* Right side of navbar */
 .user-menu {
   display: flex;
   align-items: center;
-  gap: 10px;
-}
-
-/* The user chip: avatar + username, glass pill */
-.user-chip {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 2rem;
-  padding: 6px 14px 6px 6px;
+  gap: 15px;
 }
 
 .user-avatar {
-  width: 26px;
-  height: 26px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #fc72ff, #8f68ff, #487bff);
+  background: var(--gradient-primary);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.7rem;
-  font-weight: 700;
-  color: white;
+  font-size: 18px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
 }
 
-/* Streak pill (shows 🔥 N day streak) */
-.streak-pill {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.7rem;
-  padding: 5px 12px;
-  border-radius: 2rem;
-  background: rgba(248, 113, 113, 0.1);
-  border: 1px solid rgba(248, 113, 113, 0.25);
-  color: var(--red);
-}
-
-
-/* ================================================================
+/* =================================
    LAYOUT
-================================================================ */
+   ================================= */
 
 .container {
-  max-width: 1300px;
+  max-width: 1400px;
   margin: 0 auto;
-  padding: 32px 28px 80px;
+  padding: 40px 20px;
 }
 
-/* Page header — used on the homepage above the global stats */
 .page-header {
   text-align: center;
-  margin-bottom: 32px;
+  color: white;
+  margin-bottom: 40px;
 }
 
 .page-header h1 {
-  font-size: 2.5rem;
-  font-weight: 800;
-  margin-bottom: 6px;
+  font-size: 3rem;
+  margin-bottom: 10px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .page-header p {
-  color: var(--muted2);
-  font-size: 0.9rem;
+  font-size: 1.2rem;
+  opacity: 0.9;
 }
 
-/* ── Sidebar layout ──
-   Used by My Stats and User Profile pages.
-   Two columns: 265px sidebar on the left, flexible main on the right.
-   
-   We use CSS Grid here instead of flexbox because grid gives us
-   explicit control over both columns at once. */
-.vault-layout {
-  display: grid;
-  grid-template-columns: 265px 1fr;
-  background: rgba(13, 0, 26, 0.4);
-  border-radius: 18px;
-  overflow: hidden;
-  border: 1px solid rgba(143, 104, 255, 0.2);
-  box-shadow: 0 40px 120px rgba(143, 104, 255, 0.12);
-  min-height: 660px;
-  position: relative;
-}
-
-/* Ambient purple glow behind the whole layout */
-.vault-layout::before {
-  content: '';
-  position: absolute;
-  top: -100px;
-  left: -100px;
-  width: 500px;
-  height: 500px;
-  background: radial-gradient(ellipse, rgba(143, 104, 255, 0.06) 0%, transparent 70%);
-  pointer-events: none;
-}
-
-.vault-sidebar {
-  border-right: 1px solid var(--border);
-  display: flex;
-  flex-direction: column;
-  background: rgba(13, 0, 26, 0.3);
-  position: relative;
-  z-index: 1;
-}
-
-.vault-main {
-  padding: 22px 26px;
-  position: relative;
-  z-index: 1;
-}
-
-
-/* ================================================================
+/* =================================
    CARDS
-================================================================ */
+   ================================= */
 
-/* General purpose card — used on homepage for leaderboard, user grid */
 .card {
-  background: var(--card);
-  border: 1px solid var(--border2);
-  border-radius: 14px;
-  padding: 22px;
+  background: white;
+  border-radius: var(--border-radius);
+  padding: 30px;
+  box-shadow: var(--shadow-md);
+  margin-bottom: 20px;
+}
+
+.card-dark {
+  background: rgba(0, 0, 0, 0.3);
   backdrop-filter: blur(10px);
-  margin-bottom: 16px;
+  border: 1px solid var(--border-color);
+  color: white;
 }
 
 .card-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 18px;
-  padding-bottom: 14px;
-  border-bottom: 1px solid var(--border);
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.1);
 }
 
 .card-title {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 0.9rem;
-  font-weight: 700;
-  color: var(--text);
-}
-
-.card-more {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.6rem;
-  color: var(--muted);
-  cursor: pointer;
-  transition: color 0.2s;
-  text-decoration: none;
-}
-
-.card-more:hover { color: var(--purple); }
-
-
-/* ================================================================
-   SECTION HEADERS (inside .vault-main)
-   The small uppercase label with the gradient line before it.
-================================================================ */
-
-.sec-head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 14px;
-}
-
-.sec-title {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.62rem;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  color: var(--muted2);
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-/* The short gradient line that appears before each section title */
-.sec-title::before {
-  content: '';
-  width: 14px;
-  height: 1px;
-  background: linear-gradient(to right, #fc72ff, #8f68ff);
-  opacity: 0.6;
-}
-
-.sec-more {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.6rem;
-  color: var(--muted);
-  cursor: pointer;
-  text-decoration: none;
-  transition: color 0.2s;
-}
-
-.sec-more:hover { color: var(--purple); }
-
-
-/* ================================================================
-   KPI CARDS
-   The four-across strip of stat cards used at the top of
-   My Stats and User Profile pages.
-================================================================ */
-
-.kpi-strip {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 10px;
-  margin-bottom: 20px;
-}
-
-.kpi-card {
-  background: var(--card);
-  border: 1px solid var(--border2);
-  border-radius: 12px;
-  padding: 15px;
-  backdrop-filter: blur(10px);
-  transition: all 0.25s;
-  position: relative;
-  overflow: hidden;
-  cursor: default;
-}
-
-.kpi-card:hover {
-  background: var(--card-hover);
-  border-color: rgba(143, 104, 255, 0.25);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 32px rgba(143, 104, 255, 0.1);
-}
-
-/* The gradient line that appears at the top of a KPI card on hover */
-.kpi-card::after {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 1.5px;
-  background: linear-gradient(to right, #fc72ff, #8f68ff, #487bff);
-  opacity: 0;
-  transition: opacity 0.25s;
-}
-
-.kpi-card:hover::after { opacity: 1; }
-
-/* The small pill badge inside each KPI card (e.g. "Top 21%") */
-.kpi-badge {
-  display: inline-flex;
-  align-items: center;
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.58rem;
-  font-weight: 600;
-  letter-spacing: 0.04em;
-  padding: 2px 8px;
-  border-radius: 2rem;
-  margin-bottom: 10px;
-}
-
-/* Four badge color variants */
-.badge-purple { background: rgba(143,104,255,0.15); color: #b99dff; border: 1px solid rgba(143,104,255,0.3); }
-.badge-blue   { background: rgba(72,123,255,0.15);  color: #80a8ff; border: 1px solid rgba(72,123,255,0.3);  }
-.badge-green  { background: rgba(74,222,128,0.1);   color: #4ade80; border: 1px solid rgba(74,222,128,0.25); }
-.badge-red    { background: rgba(248,113,113,0.1);  color: #f87171; border: 1px solid rgba(248,113,113,0.25);}
-
-.kpi-value {
-  font-size: 1.45rem;
-  font-weight: 800;
-  color: var(--text);
-  line-height: 1;
-  margin-bottom: 3px;
-  letter-spacing: -0.02em;
-}
-
-.kpi-label {
-  font-size: 0.72rem;
-  color: var(--muted2);
-  font-weight: 500;
-}
-
-/* Homepage version of stats (same look, slightly different grid) */
-.stats-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 12px;
-  margin-bottom: 20px;
-}
-
-
-/* ================================================================
-   SIDEBAR COMPONENTS
-================================================================ */
-
-/* Profile hero section at the top of the sidebar */
-.sidebar-profile {
-  padding: 24px;
-  border-bottom: 1px solid var(--border);
-  /* Subtle radial glow from the top */
-  background: radial-gradient(ellipse at 50% 0%, rgba(143,104,255,0.1) 0%, transparent 70%);
-}
-
-/* The big avatar box */
-.sidebar-avatar {
-  width: 64px;
-  height: 64px;
-  border-radius: 14px;
-  border: 1.5px solid rgba(143, 104, 255, 0.4);
-  background: rgba(143, 104, 255, 0.08);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.6rem;
-  margin-bottom: 12px;
-  position: relative;
-}
-
-/* "LVL 12" badge overlapping the bottom-right of the avatar */
-.sidebar-level-badge {
-  position: absolute;
-  bottom: -7px;
-  right: -7px;
-  background: linear-gradient(135deg, #fc72ff, #8f68ff);
-  font-size: 0.55rem;
-  font-weight: 700;
-  font-family: 'IBM Plex Mono', monospace;
-  padding: 2px 6px;
-  border-radius: 4px;
-  color: white;
-  letter-spacing: 0.05em;
-  /* Border matches the sidebar background so it looks "cut out" */
-  border: 1.5px solid #0d001a;
-}
-
-.sidebar-name {
-  font-size: 1rem;
-  font-weight: 700;
-  color: var(--text);
-  margin-bottom: 2px;
-}
-
-/* Title (Novice, Explorer, Veteran...) — animated gradient text */
-.sidebar-title {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.65rem;
-  background: linear-gradient(to right, #fc72ff, #8f68ff, #487bff, #8f68ff, #fc72ff);
-  background-size: 200%;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  animation: gradient-flow 2.5s linear infinite;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  margin-bottom: 14px;
-}
-
-/* XP progress bar track */
-.xp-track {
-  width: 100%;
-  height: 5px;
-  background: rgba(255, 255, 255, 0.07);
-  border-radius: 3px;
-  overflow: hidden;
-  margin-bottom: 5px;
-}
-
-/* XP fill — also animated gradient, width set via inline style in JS */
-.xp-fill {
-  height: 100%;
-  background: linear-gradient(90deg, #fc72ff, #8f68ff, #487bff, #8f68ff, #fc72ff);
-  background-size: 200%;
-  animation: gradient-flow 2.5s linear infinite;
-  border-radius: 3px;
-  /* Width is set dynamically: style="width: 72%" */
-}
-
-/* XP / level labels below the bar */
-.xp-meta {
-  display: flex;
-  justify-content: space-between;
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.58rem;
-  color: var(--muted);
-}
-
-/* The current XP value gets the gradient treatment */
-.xp-highlight {
-  background: linear-gradient(to right, #fc72ff, #8f68ff);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-/* Stat rows (global rank, total playtime, etc.) */
-.sidebar-stats {
-  padding: 14px 24px;
-  border-bottom: 1px solid var(--border);
-}
-
-.sidebar-stat-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 7px 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
-}
-
-.sidebar-stat-row:last-child { border-bottom: none; }
-
-.sidebar-stat-key {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.68rem;
-  color: var(--muted2);
-  letter-spacing: 0.02em;
-}
-
-.sidebar-stat-val {
-  font-size: 0.82rem;
-  font-weight: 600;
-  color: var(--text);
-}
-
-/* Gradient accent for special values like rank */
-.sidebar-stat-val.accent {
-  background: linear-gradient(to right, #fc72ff, #8f68ff);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.sidebar-stat-val.green { color: var(--green); }
-
-/* Navigation links in the sidebar */
-.sidebar-nav { padding: 14px 12px; flex: 1; }
-
-.sidebar-nav-item {
+  font-size: 1.5rem;
+  font-weight: bold;
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 9px 14px;
-  border-radius: 12px;
-  font-size: 0.85rem;
-  font-weight: 500;
-  color: var(--muted2);
-  cursor: pointer;
-  transition: all 0.2s;
-  margin-bottom: 2px;
-  text-decoration: none;
 }
 
-.sidebar-nav-item:hover {
-  background: rgba(255, 255, 255, 0.05);
-  color: white;
-}
-
-.sidebar-nav-item.active {
-  background: rgba(143, 104, 255, 0.12);
-  border: 1px solid rgba(143, 104, 255, 0.2);
-  color: white;
-}
-
-/* The small dot indicator next to each nav item */
-.sidebar-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.2);
-  flex-shrink: 0;
-  transition: all 0.2s;
-}
-
-.sidebar-nav-item.active .sidebar-dot {
-  background: var(--purple);
-  box-shadow: 0 0 6px var(--purple);
-}
-
-
-/* ================================================================
-   BAR CHART (manual, no library needed)
-   Used for the 7-day activity chart inside vault-main.
-   The actual Chart.js canvas sits in a .card — these classes
-   style the simpler homepage bar chart if you add one there.
-================================================================ */
-
-.bar-chart {
-  display: flex;
-  align-items: flex-end;
-  gap: 7px;
-  height: 88px;
-}
-
-.bar-col {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 5px;
-}
-
-.bar {
-  width: 100%;
-  border-radius: 4px 4px 0 0;
-  background: rgba(143, 104, 255, 0.18);
-  min-height: 3px;
-  transition: background 0.2s;
-  cursor: pointer;
-}
-
-.bar:hover { background: rgba(143, 104, 255, 0.45); }
-
-/* Today's bar uses the full gradient and a glow */
-.bar.today {
-  background: linear-gradient(to top, #fc72ff 0%, #8f68ff 60%, #487bff 100%);
-  box-shadow: 0 0 12px rgba(143, 104, 255, 0.4);
-}
-
-.bar-label {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.55rem;
-  color: var(--muted);
-}
-
-.bar-label.today { color: var(--purple); }
-
-
-/* ================================================================
-   LEADERBOARD ENTRIES
-================================================================ */
-
-.lb-entry {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 10px 12px;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: all 0.15s;
-  text-decoration: none;
-  margin-bottom: 6px;
-}
-
-.lb-entry:hover {
-  background: rgba(255, 255, 255, 0.04);
-  transform: translateX(3px);
-}
-
-/* Top 3 entries get a subtle purple tint */
-.lb-entry.top3 {
-  background: rgba(143, 104, 255, 0.08);
-  border: 1px solid rgba(143, 104, 255, 0.15);
-}
-
-/* The logged-in user's entry gets a stronger highlight */
-.lb-entry.you {
-  background: rgba(143, 104, 255, 0.12);
-  border: 1px solid rgba(143, 104, 255, 0.25);
-}
-
-.lb-rank {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.75rem;
-  color: var(--muted);
-  min-width: 32px;
-  text-align: center;
-}
-
-.lb-info { flex: 1; }
-
-.lb-name {
-  font-size: 0.88rem;
-  font-weight: 600;
-  color: var(--text);
-  margin-bottom: 1px;
-}
-
-/* The current user's name uses gradient text */
-.lb-name.you {
-  background: linear-gradient(to right, #fc72ff, #8f68ff);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.lb-sub {
-  font-size: 0.7rem;
-  color: var(--muted);
-  font-family: 'IBM Plex Mono', monospace;
-}
-
-.lb-time {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.78rem;
-  color: var(--muted2);
-}
-
-
-/* ================================================================
-   USER GRID (homepage)
-================================================================ */
-
-.user-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 12px;
-  margin-top: 16px;
-}
-
-.user-card {
-  background: var(--card);
-  border: 1px solid var(--border2);
-  border-radius: 12px;
-  padding: 20px;
-  text-align: center;
-  cursor: pointer;
-  transition: all 0.2s;
-  text-decoration: none;
-  display: block;
-}
-
-.user-card:hover {
-  background: var(--card-hover);
-  border-color: rgba(143, 104, 255, 0.25);
-  transform: translateY(-3px);
-  box-shadow: 0 12px 30px rgba(143, 104, 255, 0.1);
-}
-
-.user-card-avatar {
-  width: 48px;
-  height: 48px;
-  border-radius: 12px;
-  background: rgba(143, 104, 255, 0.1);
-  border: 1px solid rgba(143, 104, 255, 0.2);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.2rem;
-  margin: 0 auto 10px;
-}
-
-.user-card-name {
-  font-size: 0.9rem;
-  font-weight: 700;
-  color: var(--text);
-  margin-bottom: 4px;
-}
-
-.user-card-date {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.62rem;
-  color: var(--muted);
-}
-
-
-/* ================================================================
-   LIST ITEMS (top games / websites inside vault-main)
-================================================================ */
-
-.list-item {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 9px 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-  cursor: pointer;
-  transition: padding-left 0.15s;
-}
-
-.list-item:last-child { border-bottom: none; }
-.list-item:hover { padding-left: 4px; }
-
-.list-num {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.62rem;
-  color: var(--muted);
-  min-width: 20px;
-}
-
-.list-icon { font-size: 1.1rem; width: 24px; text-align: center; }
-.list-name { font-size: 0.86rem; font-weight: 600; color: var(--text); flex: 1; }
-
-.list-bar-wrap {
-  width: 70px;
-  height: 3px;
-  background: rgba(255, 255, 255, 0.07);
-  border-radius: 2px;
-  overflow: hidden;
-}
-
-.list-bar {
-  height: 100%;
-  border-radius: 2px;
-  background: linear-gradient(to right, #8f68ff, #487bff);
-}
-
-.list-time {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.65rem;
-  color: var(--muted2);
-  min-width: 40px;
-  text-align: right;
-}
-
-
-/* ================================================================
-   ACHIEVEMENTS GRID
-================================================================ */
-
-.achievement-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
-  gap: 12px;
-}
-
-.achievement-card {
-  background: var(--card);
-  border: 1px solid var(--border2);
-  border-radius: 12px;
-  padding: 18px;
-  text-align: center;
-  transition: all 0.2s;
-}
-
-/* Unlocked: purple tint */
-.achievement-card.unlocked {
-  background: rgba(143, 104, 255, 0.12);
-  border-color: rgba(143, 104, 255, 0.3);
-}
-
-/* Locked: faded and desaturated */
-.achievement-card.locked {
-  opacity: 0.45;
-  filter: grayscale(60%);
-}
-
-.achievement-icon  { font-size: 2.5rem; margin-bottom: 8px; }
-.achievement-name  { font-size: 0.82rem; font-weight: 700; color: var(--text); margin-bottom: 4px; }
-.achievement-desc  { font-size: 0.7rem; color: var(--muted2); margin-bottom: 8px; line-height: 1.4; }
-
-.achievement-status-unlocked { font-size: 0.68rem; color: var(--green); font-weight: 600; }
-.achievement-status-locked   { font-size: 0.68rem; color: var(--muted); }
-
-
-/* ================================================================
+/* =================================
    BUTTONS
-================================================================ */
+   ================================= */
 
 .btn {
-  padding: 10px 22px;
+  padding: 12px 24px;
   border: none;
-  border-radius: 2rem;
-  font-size: 0.85rem;
+  border-radius: 8px;
+  font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.3s;
   display: inline-flex;
   align-items: center;
   gap: 8px;
   text-decoration: none;
-  font-family: 'Poppins', sans-serif;
   background: none;
 }
 
-/* Primary: animated gradient (same as landing page CTA) */
 .btn-primary {
-  background: linear-gradient(135deg, #fc72ff, #8f68ff, #487bff, #8f68ff, #fc72ff);
-  background-size: 200%;
-  animation: gradient-flow 2.5s linear infinite;
+  background: var(--gradient-primary);
   color: white;
 }
 
 .btn-primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(143, 104, 255, 0.4);
+  box-shadow: var(--shadow-lg);
 }
 
-/* Secondary: glass pill */
 .btn-secondary {
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  color: var(--text);
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  border: 2px solid rgba(255, 255, 255, 0.5);
 }
 
-.btn-secondary:hover { background: rgba(255, 255, 255, 0.12); }
-
-.btn-sm    { padding: 6px 16px; font-size: 0.78rem; }
-.btn-block { width: 100%; justify-content: center; }
-
-
-/* ================================================================
-   FORMS
-================================================================ */
-
-.form-group { margin-bottom: 18px; }
-
-.form-label {
-  display: block;
-  margin-bottom: 6px;
-  font-weight: 600;
-  font-size: 0.85rem;
-  color: var(--muted2);
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.3);
 }
 
-.form-input {
-  width: 100%;
-  padding: 11px 16px;
-  border: 1px solid var(--border2);
-  border-radius: 10px;
-  background: rgba(255, 255, 255, 0.05);
-  color: var(--text);
+.btn-success {
+  background: var(--success);
+  color: white;
+}
+
+.btn-danger {
+  background: var(--danger);
+  color: white;
+}
+
+.btn-sm {
+  padding: 8px 16px;
   font-size: 0.9rem;
-  font-family: 'Poppins', sans-serif;
-  transition: all 0.2s;
 }
 
-.form-input:focus {
-  outline: none;
-  border-color: rgba(143, 104, 255, 0.4);
-  background: rgba(143, 104, 255, 0.06);
+.btn-block {
+  width: 100%;
+  justify-content: center;
 }
 
-.form-input::placeholder { color: var(--muted); }
+/* =================================
+   STATS GRID
+   ================================= */
 
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  margin-bottom: 40px;
+}
 
-/* ================================================================
-   LOADING & STATES
-================================================================ */
+.stat-card {
+  background: white;
+  border-radius: var(--border-radius);
+  padding: 30px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.stat-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-md);
+}
+
+.stat-icon {
+  font-size: 3rem;
+  line-height: 1;
+}
+
+.stat-info h3 {
+  font-size: 0.9rem;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+}
+
+.stat-value {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: var(--primary);
+  margin-bottom: 5px;
+}
+
+.stat-label {
+  font-size: 0.85rem;
+  color: #999;
+}
+
+/* =================================
+   LOADING & ERROR
+   ================================= */
 
 .loading {
   text-align: center;
-  padding: 80px 20px;
-  color: var(--muted2);
+  padding: 60px 20px;
+  color: white;
 }
 
-/* Two-tone spinner using the pink/purple gradient */
 .spinner {
-  width: 44px;
-  height: 44px;
-  border: 3px solid rgba(255, 255, 255, 0.08);
-  border-top-color: var(--purple);
-  border-right-color: var(--pink);
+  width: 50px;
+  height: 50px;
+  border: 5px solid rgba(255, 255, 255, 0.3);
+  border-top-color: white;
   border-radius: 50%;
-  margin: 0 auto 16px;
-  animation: spin 0.8s linear infinite;
+  margin: 0 auto 20px;
+  animation: spin 1s linear infinite;
 }
 
-@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
 
 .error-message {
-  background: rgba(248, 113, 113, 0.1);
-  border: 1px solid rgba(248, 113, 113, 0.25);
-  color: var(--red);
+  background: var(--danger);
+  color: white;
   padding: 20px;
-  border-radius: 12px;
+  border-radius: var(--border-radius);
   text-align: center;
 }
 
 .empty-state {
   text-align: center;
   padding: 60px 20px;
-  color: var(--muted);
+  color: rgba(255, 255, 255, 0.6);
 }
 
 .empty-state-icon {
-  font-size: 3rem;
-  margin-bottom: 16px;
+  font-size: 4rem;
+  margin-bottom: 20px;
   opacity: 0.5;
 }
 
+/* =================================
+   FORMS
+   ================================= */
 
-/* ================================================================
-   RESPONSIVE
-================================================================ */
-
-/* Stack sidebar below main on narrow screens */
-@media (max-width: 900px) {
-  .vault-layout {
-    grid-template-columns: 1fr;
-  }
-  .vault-sidebar {
-    border-right: none;
-    border-bottom: 1px solid var(--border);
-  }
-  .kpi-strip {
-    grid-template-columns: repeat(2, 1fr);
-  }
+.form-group {
+  margin-bottom: 20px;
 }
 
-@media (max-width: 600px) {
-  .container { padding: 20px 16px 60px; }
-  .navbar-content { padding: 0 16px; }
-  .kpi-strip { grid-template-columns: 1fr 1fr; }
-  .page-header h1 { font-size: 1.8rem; }
+.form-label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: white;
+}
+
+.form-input {
+  width: 100%;
+  padding: 12px 16px;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  font-size: 1rem;
+  transition: border-color 0.3s, background 0.3s;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: var(--primary);
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.form-input::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* =================================
+   RESPONSIVE
+   ================================= */
+
+@media (max-width: 768px) {
+  .page-header h1 {
+    font-size: 2rem;
+  }
+  
+  .navbar-content {
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .stat-card {
+    flex-direction: column;
+    text-align: center;
+  }
 }

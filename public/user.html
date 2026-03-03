@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile - The Vault</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Navbar will be injected -->
+    
+    <div class="container">
+        <!-- Loading State -->
+        <div id="loading" class="loading">
+            <div class="spinner"></div>
+            <p>Loading user profile...</p>
+        </div>
+        
+        <!-- Error State -->
+        <div id="error" style="display: none;">
+            <div class="error-message">
+                <h2>User Not Found</h2>
+                <p id="error-text"></p>
+                <button class="btn btn-secondary" onclick="window.location.href='/'">
+                    Back to Home
+                </button>
+            </div>
+        </div>
+        
+        <!-- User Profile -->
+        <div id="profile" style="display: none;">
+            <!-- Will be filled by JavaScript -->
+        </div>
+    </div>
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-database-compat.js"></script>
+    
+    <!-- Our Scripts -->
+    <script src="firebase-config.js"></script>
+    <script src="shared.js"></script>
+    <script src="user-profile.js"></script>
+</body>
+</html>

@@ -3,74 +3,78 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Vault Stats — Home</title>
+    <title>The Vault Stats - Home</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- Navbar is injected here by shared.js renderNavbar() -->
-
+    <!-- Navbar will be injected by shared.js -->
+    
     <div class="container">
-
-        <!-- Page header -->
+        <!-- Page Header -->
         <div class="page-header">
-            <h1 class="gradient-text">The Vault Stats</h1>
+            <h1>🏆 The Vault Stats</h1>
             <p>Global Player Statistics & Leaderboard</p>
         </div>
-
-        <!-- Loading state — shown by default, hidden when data arrives -->
+        
+        <!-- Loading State -->
         <div id="loading" class="loading">
             <div class="spinner"></div>
             <p>Loading stats...</p>
         </div>
-
-        <!-- Error state — hidden by default -->
+        
+        <!-- Error State -->
         <div id="error" style="display: none;">
             <div class="error-message">
-                <h2 style="margin-bottom:8px;">Error Loading Data</h2>
-                <p id="error-text" style="margin-bottom:16px;"></p>
-                <button class="btn btn-secondary" onclick="location.reload()">Retry</button>
+                <h2>Error Loading Data</h2>
+                <p id="error-text"></p>
+                <button class="btn btn-secondary" onclick="location.reload()">
+                    Retry
+                </button>
             </div>
         </div>
-
-        <!-- Main content — hidden until data loads -->
+        
+        <!-- Main Content -->
         <div id="content" style="display: none;">
-
-            <!-- Global KPI cards (filled by home.js) -->
+            <!-- Global Stats -->
             <div id="global-stats"></div>
-
-            <!-- Leaderboard card -->
-            <div class="card">
+            
+            <!-- Leaderboard -->
+            <div class="card card-dark">
                 <div class="card-header">
-                    <div class="card-title">🏆 Top Players</div>
-                    <a href="#" class="card-more">view all →</a>
+                    <h2 class="card-title">
+                        <span>🏆</span>
+                        Top Players
+                    </h2>
                 </div>
                 <div id="leaderboard"></div>
             </div>
-
-            <!-- User browser card -->
-            <div class="card">
+            
+            <!-- User Browser -->
+            <div class="card card-dark">
                 <div class="card-header">
-                    <div class="card-title">👥 All Users</div>
-                    <input
-                        type="text"
-                        id="user-search"
-                        class="form-input"
+                    <h2 class="card-title">
+                        <span>👥</span>
+                        All Users
+                    </h2>
+                    <input 
+                        type="text" 
+                        id="user-search" 
+                        class="form-input" 
                         placeholder="Search users..."
-                        style="max-width: 240px;"
+                        style="max-width: 300px;"
                     >
                 </div>
                 <div id="user-list"></div>
             </div>
-
         </div>
     </div>
-
+    
     <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-database-compat.js"></script>
-
-    <!-- Our scripts (order matters!) -->
+    
+    <!-- Our Scripts -->
     <script src="firebase-config.js"></script>
     <script src="shared.js"></script>
     <script src="home.js"></script>
