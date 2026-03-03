@@ -10,7 +10,6 @@ const PORT = process.env.PORT || 3000;
 // Serve static files from public folder
 app.use(express.static('public'));
 
-// Initilize Firebase Admin SDK
 // Initialize Firebase Admin SDK
 let firebaseConfig;
 

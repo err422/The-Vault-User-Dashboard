@@ -1,4 +1,4 @@
-// My Stats Page Logic
+// My Stats Page Logic - TrackR Style
 // Handles authentication and personal stats display
 
 let currentUser = null;
@@ -8,9 +8,6 @@ let activityChart = null;
 async function initMyStatsPage() {
     console.log('📊 Initializing My Stats page...');
     
-    // Render navbar
-    await renderNavbar();
-    
     // Check auth state
     auth.onAuthStateChanged(async (user) => {
         currentUser = user;
@@ -18,6 +15,7 @@ async function initMyStatsPage() {
         if (user) {
             // User is signed in
             console.log('✅ User signed in:', user.email);
+            await renderUserMenu();
             await loadPersonalStats();
         } else {
             // User is not signed in
@@ -25,6 +23,19 @@ async function initMyStatsPage() {
             showSignInForm();
         }
     });
+}
+
+// Render user menu
+async function renderUserMenu() {
+    const menuContent = document.getElementById('user-menu-content');
+    const initials = currentUser.email.slice(0, 2).toUpperCase();
+    
+    menuContent.innerHTML = `
+        <div class="user-avatar">${initials}</div>
+        <button class="btn btn-secondary" onclick="handleSignOut()" style="padding: 6px 14px; font-size: 12px;">
+            Sign Out
+        </button>
+    `;
 }
 
 // Show sign in form
@@ -42,7 +53,6 @@ function showSignInForm() {
         try {
             await auth.signInWithEmailAndPassword(email, password);
             showToast('Signed in successfully!', 'success');
-            // onAuthStateChanged will trigger and load stats
         } catch (error) {
             console.error('Sign in error:', error);
             showToast('Sign in failed: ' + error.message, 'error');
@@ -174,107 +184,106 @@ function calculateLast7Days(userData) {
 
 // Render personal stats
 function renderPersonalStats(stats, userData) {
+    const initials = userData.username.slice(0, 2).toUpperCase();
+    
     const html = `
-        <div class="page-header">
-            <h1>📊 My Stats</h1>
-            <p>@${userData.username}</p>
-        </div>
-        
-        <!-- Level Progress -->
-        <div class="card card-dark">
-            <div style="text-align: center; margin-bottom: 20px;">
-                <div style="font-size: 60px; margin-bottom: 10px;">👤</div>
-                <h2 style="font-size: 2rem; margin-bottom: 5px;">
-                    Level ${stats.level}
-                </h2>
-                <p style="color: #999; font-size: 1.1rem;">
-                    ${stats.title}
-                </p>
+        <div class="container">
+            <!-- Page Header -->
+            <div class="page-header">
+                <h1 class="page-title">My Stats</h1>
+                <p class="page-subtitle">@${userData.username}</p>
             </div>
-            
-            <!-- XP Progress Bar -->
-            <div style="margin-bottom: 10px;">
-                <div style="
-                    background: rgba(255,255,255,0.1);
-                    border-radius: 10px;
-                    height: 30px;
-                    overflow: hidden;
-                    position: relative;
-                ">
-                    <div style="
-                        background: linear-gradient(90deg, #667eea, #764ba2);
-                        height: 100%;
-                        width: ${stats.xpProgress}%;
-                        border-radius: 10px;
-                        transition: width 1s ease;
-                    "></div>
-                    <div style="
-                        position: absolute;
-                        top: 0;
-                        left: 0;
-                        right: 0;
-                        bottom: 0;
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        color: white;
-                        font-weight: 700;
-                        font-size: 14px;
-                    ">
-                        ${Math.floor(stats.xpProgress)}% to Level ${stats.level + 1}
+
+            <!-- Profile Card -->
+            <div class="profile-card" style="margin-bottom: 22px;">
+                <div class="profile-banner">
+                    <div class="profile-banner-pattern"></div>
+                </div>
+                <div class="profile-body">
+                    <div class="profile-avatar-wrap">
+                        <div class="profile-avatar">${initials}</div>
+                    </div>
+                    <div class="profile-username">${userData.username}</div>
+                    <div class="profile-title-row">
+                        <span class="title-pill title-${stats.title}">${stats.title}</span>
+                    </div>
+                    <div class="profile-stats">
+                        <div class="ps-item">
+                            <div class="ps-val" style="color: #a88dff;">${stats.level}</div>
+                            <div class="ps-lbl">Level</div>
+                        </div>
+                        <div class="ps-item">
+                            <div class="ps-val" style="color: #85aaff;">${stats.gamesPlayed}</div>
+                            <div class="ps-lbl">Games</div>
+                        </div>
+                        <div class="ps-item">
+                            <div class="ps-val" style="color: var(--green);">${formatPlaytime(stats.totalPlaytime)}</div>
+                            <div class="ps-lbl">Playtime</div>
+                        </div>
+                    </div>
+                    <div class="profile-xp-section">
+                        <div class="profile-xp-top">
+                            <span>XP Progress to Lv.${stats.level + 1}</span>
+                            <span>${stats.xp} XP</span>
+                        </div>
+                        <div class="profile-xp-bar">
+                            <div class="profile-xp-fill" style="width: ${stats.xpProgress}%"></div>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div style="text-align: center; color: #999; font-size: 14px;">
-                ${stats.xp} XP
-            </div>
-        </div>
-        
-        <!-- Stats Cards -->
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-icon">⏱️</div>
-                <div class="stat-info">
-                    <h3>Total Playtime</h3>
+
+            <!-- Stats Grid -->
+            <div class="stats-grid">
+                <div class="stat-card purple">
+                    <div class="stat-icon">⏱️</div>
+                    <div class="stat-label">Total Playtime</div>
                     <div class="stat-value">${formatPlaytime(stats.totalPlaytime)}</div>
-                    <div class="stat-label">All time</div>
+                    <div class="stat-meta">All time</div>
                 </div>
-            </div>
-            
-            <div class="stat-card">
-                <div class="stat-icon">🎮</div>
-                <div class="stat-info">
-                    <h3>Games Played</h3>
+
+                <div class="stat-card blue">
+                    <div class="stat-icon">🎮</div>
+                    <div class="stat-label">Games Played</div>
                     <div class="stat-value">${stats.gamesPlayed}</div>
-                    <div class="stat-label">Unique games</div>
+                    <div class="stat-meta">Unique games</div>
                 </div>
-            </div>
-            
-            ${stats.favoriteGame.name !== 'None' ? `
-                <div class="stat-card">
-                    <div class="stat-icon">👑</div>
-                    <div class="stat-info">
-                        <h3>Favorite Game</h3>
-                        <div class="stat-value" style="font-size: 1.5rem;">
+
+                ${stats.favoriteGame.name !== 'None' ? `
+                    <div class="stat-card green">
+                        <div class="stat-icon">👑</div>
+                        <div class="stat-label">Favorite Game</div>
+                        <div class="stat-value" style="font-size: 20px; font-weight: 700;">
                             ${stats.favoriteGame.name}
                         </div>
-                        <div class="stat-label">
+                        <div class="stat-meta">
                             ${formatPlaytime(stats.favoriteGame.playtime)} played
                         </div>
                     </div>
+                ` : ''}
+
+                <div class="stat-card yellow">
+                    <div class="stat-icon">📈</div>
+                    <div class="stat-label">This Week</div>
+                    <div class="stat-value">
+                        ${formatPlaytime(stats.last7Days.reduce((sum, d) => sum + d.minutes * 60, 0))}
+                    </div>
+                    <div class="stat-meta">Last 7 days</div>
                 </div>
-            ` : ''}
-        </div>
-        
-        <!-- 7-Day Activity Chart -->
-        <div class="card card-dark">
-            <div class="card-header">
-                <h2 class="card-title">
-                    <span>📈</span>
-                    Last 7 Days
-                </h2>
             </div>
-            <canvas id="activity-chart"></canvas>
+
+            <!-- 7-Day Activity Chart -->
+            <div class="card">
+                <div class="card-header">
+                    <div>
+                        <div class="card-title">Activity</div>
+                        <div class="card-subtitle">Last 7 days</div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <canvas id="activity-chart" style="max-height: 300px;"></canvas>
+                </div>
+            </div>
         </div>
     `;
     
@@ -294,17 +303,17 @@ function renderActivityChart(days) {
     }
     
     activityChart = new Chart(ctx, {
-        type: 'line',
+        type: 'bar',
         data: {
             labels: days.map(d => d.dayName),
             datasets: [{
                 label: 'Playtime (minutes)',
                 data: days.map(d => d.minutes),
-                borderColor: '#667eea',
-                backgroundColor: 'rgba(102, 126, 234, 0.1)',
-                fill: true,
-                tension: 0.4,
-                borderWidth: 3
+                backgroundColor: 'rgba(124, 92, 252, 0.2)',
+                borderColor: '#7c5cfc',
+                borderWidth: 2,
+                borderRadius: 8,
+                borderSkipped: false
             }]
         },
         options: {
@@ -315,10 +324,13 @@ function renderActivityChart(days) {
                     display: false
                 },
                 tooltip: {
-                    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                    backgroundColor: 'rgba(17, 19, 24, 0.95)',
+                    titleColor: '#e8eaf0',
+                    bodyColor: '#e8eaf0',
+                    borderColor: '#1f2330',
+                    borderWidth: 1,
                     padding: 12,
-                    titleColor: '#fff',
-                    bodyColor: '#fff',
+                    displayColors: false,
                     callbacks: {
                         label: function(context) {
                             const minutes = context.parsed.y;
@@ -333,18 +345,28 @@ function renderActivityChart(days) {
                 y: {
                     beginAtZero: true,
                     ticks: {
-                        color: '#999',
+                        color: '#5a607a',
+                        font: {
+                            family: 'JetBrains Mono',
+                            size: 11
+                        },
                         callback: function(value) {
                             return value + 'm';
                         }
                     },
                     grid: {
-                        color: 'rgba(255, 255, 255, 0.1)'
+                        color: '#1f2330',
+                        drawBorder: false
                     }
                 },
                 x: {
                     ticks: {
-                        color: '#999'
+                        color: '#8890a8',
+                        font: {
+                            family: 'Inter',
+                            size: 12,
+                            weight: 600
+                        }
                     },
                     grid: {
                         display: false
@@ -354,8 +376,6 @@ function renderActivityChart(days) {
         }
     });
 }
-
-
 
 // Start when DOM is ready
 document.addEventListener('DOMContentLoaded', initMyStatsPage);

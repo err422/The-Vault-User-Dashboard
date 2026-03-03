@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Vault - Stats Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <a href="/" class="navbar-brand">The Vault</a>
+        
+        <div class="navbar-links">
+            <a href="/" class="active">Dashboard</a>
+            <a href="/mystats.html">My Stats</a>
+            <a href="#leaderboard">Leaderboard</a>
+        </div>
+        
+        <div class="user-menu">
+            <div class="live-pill">
+                <div class="live-dot"></div>
+                LIVE
+            </div>
+            <div id="user-menu-content">
+                <!-- Filled by JavaScript -->
+            </div>
+        </div>
+    </nav>
+
+    <!-- Loading State -->
+    <div id="loading" class="loading">
+        <div class="spinner"></div>
+        <p>Loading dashboard data...</p>
+    </div>
+
+    <!-- Error State -->
+    <div id="error" style="display: none;">
+        <div class="container">
+            <div class="error-message">
+                <h2>⚠️ Error Loading Data</h2>
+                <p id="error-text"></p>
+                <button class="btn btn-secondary" onclick="location.reload()">
+                    Retry
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div id="content" style="display: none;">
+        <div class="container">
+            <!-- Page Header -->
+            <div class="page-header">
+                <h1 class="page-title">Dashboard Overview</h1>
+                <p class="page-subtitle">Global statistics and leaderboard</p>
+            </div>
+
+            <!-- Stats Grid -->
+            <div class="stats-grid">
+                <div class="stat-card purple">
+                    <div class="stat-icon">👥</div>
+                    <div class="stat-label">Total Users</div>
+                    <div class="stat-value" id="total-users">--</div>
+                    <div class="stat-meta">
+                        <span id="recent-signups">--</span> this week
+                    </div>
+                </div>
+
+                <div class="stat-card green">
+                    <div class="stat-icon">⏱</div>
+                    <div class="stat-label">Total Playtime</div>
+                    <div class="stat-value" id="total-playtime">--</div>
+                    <div class="stat-meta">Combined playtime</div>
+                </div>
+
+                <div class="stat-card blue">
+                    <div class="stat-icon">🎮</div>
+                    <div class="stat-label">Games Tracked</div>
+                    <div class="stat-value" id="total-games">--</div>
+                    <div class="stat-meta">Custom entries</div>
+                </div>
+
+                <div class="stat-card yellow">
+                    <div class="stat-icon">🌐</div>
+                    <div class="stat-label">Websites</div>
+                    <div class="stat-value" id="total-websites">--</div>
+                    <div class="stat-meta">Custom entries</div>
+                </div>
+            </div>
+
+            <!-- Leaderboard Section -->
+            <div class="card" id="leaderboard">
+                <div class="card-header">
+                    <div>
+                        <div class="card-title">User Leaderboard</div>
+                        <div class="card-subtitle">Ranked by total playtime</div>
+                    </div>
+                    <input 
+                        type="text" 
+                        id="user-search" 
+                        class="form-input" 
+                        placeholder="Search users..."
+                        style="max-width: 200px; padding: 6px 12px; font-size: 12px;"
+                    >
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>User</th>
+                            <th>Title</th>
+                            <th>Level / XP</th>
+                            <th>Games</th>
+                            <th>Playtime</th>
+                        </tr>
+                    </thead>
+                    <tbody id="leaderboard-body">
+                        <!-- Filled by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- All Users Grid -->
+            <div class="card">
+                <div class="card-header">
+                    <div>
+                        <div class="card-title">All Users</div>
+                        <div class="card-subtitle">Browse everyone</div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div id="user-list" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 12px;">
+                        <!-- Filled by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-database-compat.js"></script>
+    
+    <!-- Our Scripts -->
+    <script src="firebase-config.js"></script>
+    <script src="shared.js"></script>
+    <script src="home.js"></script>
+</body>
+</html>
